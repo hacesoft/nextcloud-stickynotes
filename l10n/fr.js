@@ -1,0 +1,1 @@
+OC.L10N.register("stickynotes",{"Application settings": "Paramètres de l’application", "Sticky note styles and categories": "Styles et catégories de notes", "Widget settings": "Paramètres du widget", "Application layout": "Mise en page de l’application", "Page width": "Largeur de page", "Full width": "Pleine largeur", "Centered": "Centré"},"nplurals=2; plural=(n != 1);");

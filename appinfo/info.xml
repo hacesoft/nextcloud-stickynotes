@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <id>stickynotes</id>
+    <name>Sticky Notes</name>
+    <namespace>StickyNotes</namespace>
+    <summary>Simple sticky notes, shared notes and assigned tasks for Nextcloud.</summary>
+    <description><![CDATA[
+Sticky Notes adds quick notes and lightweight tasks directly to Nextcloud.
+Create colored sticky notes, share them with users or groups, assign tasks,
+set due dates and keep the most important notes visible on the Dashboard.
+    ]]></description>
+    <version>1.0.0</version>
+    <licence>AGPL-3.0-or-later</licence>
+    <author>hacesoft</author>
+    <category>organization</category>
+    <dependencies>
+        <nextcloud min-version="34" max-version="35"/>
+    </dependencies>
+    <navigations>
+        <navigation>
+            <name>Sticky Notes</name>
+            <namespace>StickyNotes</namespace>
+            <route>stickynotes.page.index</route>
+            <order>30</order>
+            <icon>app.svg</icon>
+        </navigation>
+    </navigations>
+</info>

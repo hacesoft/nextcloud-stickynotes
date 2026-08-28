@@ -1,0 +1,24 @@
+<?php
+return [
+    'routes' => [
+        ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
+        ['name' => 'note#list', 'url' => '/api/notes', 'verb' => 'GET'],
+        ['name' => 'editor#list', 'url' => '/api/editor', 'verb' => 'GET'],
+        ['name' => 'editor#save', 'url' => '/api/notes/{id}/editor', 'verb' => 'PUT'],
+        ['name' => 'editor#delete', 'url' => '/api/notes/{id}/editor', 'verb' => 'DELETE'],
+        ['name' => 'note#create', 'url' => '/api/notes', 'verb' => 'POST'],
+        ['name' => 'note#update', 'url' => '/api/notes/{id}', 'verb' => 'PUT'],
+        ['name' => 'note#delete', 'url' => '/api/notes/{id}', 'verb' => 'DELETE'],
+        ['name' => 'note#complete', 'url' => '/api/notes/{id}/complete', 'verb' => 'POST'],
+        ['name' => 'note#share', 'url' => '/api/notes/{id}/shares', 'verb' => 'POST'],
+        ['name' => 'note#unshare', 'url' => '/api/notes/{id}/shares/{shareId}', 'verb' => 'DELETE'],
+        ['name' => 'user#search', 'url' => '/api/users', 'verb' => 'GET'],
+        ['name' => 'category#list', 'url' => '/api/categories', 'verb' => 'GET'],
+        ['name' => 'category#create', 'url' => '/api/categories', 'verb' => 'POST'],
+        ['name' => 'category#update', 'url' => '/api/categories/{id}', 'verb' => 'PUT'],
+        ['name' => 'category#delete', 'url' => '/api/categories/{id}', 'verb' => 'DELETE'],
+        ['name' => 'settings#get', 'url' => '/api/settings', 'verb' => 'GET'],
+        ['name' => 'settings#save', 'url' => '/api/settings', 'verb' => 'PUT'],
+        ['name' => 'settings#saveLayout', 'url' => '/api/layout', 'verb' => 'PUT'],
+    ],
+];

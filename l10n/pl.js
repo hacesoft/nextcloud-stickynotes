@@ -1,0 +1,1 @@
+OC.L10N.register("stickynotes",{"Application settings": "Ustawienia aplikacji", "Sticky note styles and categories": "Style karteczek i kategorie", "Widget settings": "Ustawienia widżetu", "Application layout": "Układ aplikacji", "Page width": "Szerokość strony", "Full width": "Pełna szerokość", "Centered": "Wyśrodkowany"},"nplurals=2; plural=(n != 1);");

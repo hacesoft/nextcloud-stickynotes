@@ -1,0 +1,1 @@
+OC.L10N.register("stickynotes",{"Application settings": "Налаштування застосунку", "Sticky note styles and categories": "Стилі нотаток і категорії", "Widget settings": "Налаштування віджета", "Application layout": "Макет застосунку", "Page width": "Ширина сторінки", "Full width": "Повна ширина", "Centered": "По центру"},"nplurals=2; plural=(n != 1);");
