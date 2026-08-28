@@ -1,0 +1,31 @@
+# Editor lístečků
+
+[Česky](EDITOR_CZ.md) | [English](EDITOR.md) | [← Dokumentace](README_CZ.md)
+
+Editor slouží k vytvoření i následné úpravě lístečku.
+
+## Rich-text editor
+
+Obsah není omezen na prostý text. Verze 1.0.0 podporuje rich-text editor s:
+
+- nadpisy,
+- základním formátováním textu,
+- seznamy,
+- odkazy,
+- tabulkami.
+
+Editor umožňuje upravovat obsah podobně jako běžný textový editor a průběžně vidět jeho výslednou podobu na lístečku.
+
+## Nadpis a tělo
+
+Nadpis a vlastní obsah jsou vizuálně oddělené, ale výsledkem je jeden lísteček, nikoli dvě samostatná textová pole ve finálním zobrazení.
+
+## Kontrast textu
+
+Aplikace používá automatický kontrast textu podle barvy pozadí lístečku, aby text zůstal čitelný i při použití světlých nebo tmavších barev.
+
+## Další vlastnosti lístečku
+
+Při editaci lze kromě obsahu nastavit kategorii, typ, prioritu, termín a přiřazení uživateli nebo skupině.
+
+Vzhled kategorie je popsán v [Kategorie a vzhled](CATEGORIES_CZ.md).

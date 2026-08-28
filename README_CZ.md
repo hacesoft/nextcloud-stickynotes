@@ -1,12 +1,14 @@
 # Sticky Notes pro Nextcloud
 
+[Česky](README_CZ.md) | [English](README.md)
+
+<img width="1181" height="579" alt="Sticky Notes – hlavní obrazovka" src="https://github.com/user-attachments/assets/71fd81a9-5828-4c0e-9160-fc8b3ec76c65" />
+
 **Verze 1.0.0**
 
 Sticky Notes (Samolepicí lístečky) je nativní aplikace pro Nextcloud pro rychlé poznámky, osobní lístečky a jednoduché rodinné či týmové úkoly. Běží přímo v Nextcloudu a nepotřebuje samostatný aplikační kontejner.
 
-[English documentation](README.md)
-
-## Funkce
+## Hlavní funkce
 
 - barevné samolepicí lístečky,
 - poznámky a úkoly s prioritou a termínem,
@@ -24,24 +26,29 @@ Sticky Notes (Samolepicí lístečky) je nativní aplikace pro Nextcloud pro ryc
 - notifikace při přiřazení úkolů,
 - více jazykových mutací.
 
+## Dashboard widget
+
+Widget zobrazuje lístečky přímo na Dashboardu Nextcloudu v kompaktní podobě.
+
+<img width="351" height="569" alt="Sticky Notes – Dashboard widget" src="https://github.com/user-attachments/assets/e11025bc-9568-43ec-abec-431529528306" />
+
+## Dokumentace
+
+Kompletní česká dokumentace: **[docs/README_CZ.md](docs/README_CZ.md)**
+
+Najdete v ní uživatelskou příručku, popis editoru, kategorií, sdílení, widgetu, nastavení, instalace a aktualizace.
+
 ## Kompatibilita
 
 Sticky Notes 1.0.0 podporuje **Nextcloud 34 a 35**. Starší verze Nextcloudu nejsou podporovány.
 
-## Instalace
+## Rychlé odkazy
 
-Viz [docs/INSTALL_CZ.md](docs/INSTALL_CZ.md).
-
-## Aktualizace
-
-Viz [docs/UPDATE.md](docs/UPDATE.md).
-
-## Ovládání
-
-- **Nový lísteček** vytvoří poznámku nebo úkol.
-- **Paleta** otevře správu kategorií a vzhledu.
-- **Ozubené kolečko** otevře nastavení aplikace.
-- Widget lze přidat na Dashboard Nextcloudu.
+- [Instalace](docs/INSTALL_CZ.md)
+- [Aktualizace](docs/UPDATE_CZ.md)
+- [Uživatelská příručka](docs/USER_GUIDE_CZ.md)
+- [Nastavení](docs/SETTINGS_CZ.md)
+- [Dashboard widget](docs/DASHBOARD_CZ.md)
 
 ## Data a soukromí
 
