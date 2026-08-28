@@ -5,8 +5,8 @@ APP_ID="stickynotes"
 APP_NAME="Sticky Notes"
 MIN_NC_MAJOR=34
 
-SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-APP_DIR="$SCRIPT_DIR"
+PROJECT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+APP_DIR="$PROJECT_DIR/src"
 
 WEB_CONTAINER=""
 CRON_CONTAINER=""
