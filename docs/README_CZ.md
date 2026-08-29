@@ -1,8 +1,8 @@
-# Dokumentace Sticky Notes 1.0.0
+# Dokumentace Sticky Notes 1.1.0
 
 [Česky](README_CZ.md) | [English](README.md) | [← Hlavní README](../README_CZ.md)
 
-Tato dokumentace popisuje funkce vydání **Sticky Notes 1.0.0**.
+Tato dokumentace popisuje funkce vydání **Sticky Notes 1.1.0**.
 
 ## Uživatelská dokumentace
 
@@ -12,7 +12,7 @@ Tato dokumentace popisuje funkce vydání **Sticky Notes 1.0.0**.
 - [Sdílení, přiřazení a notifikace](SHARING_CZ.md) – uživatelé, skupiny a dokončování úkolů.
 - [Dashboard widget](DASHBOARD_CZ.md) – kompaktní zobrazení na Dashboardu.
 - [Nastavení aplikace](SETTINGS_CZ.md) – widget, stránkování, layout a vzhled.
-- [Notifikace](NOTIFICATIONS_CZ.md) – současné notifikace v 1.0.0 a plánovaný model Nextcloud + ntfy pro 1.1.0.
+- [Notifikace](NOTIFICATIONS_CZ.md) – per-user notifikace Nextcloud + volitelné ntfy ve verzi 1.1.0.
 
 ## Plán další verze
 

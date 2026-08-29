@@ -18,9 +18,8 @@ use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IUserSession;
 use OCP\IUserManager;
-use OCP\IConfig;
 use Psr\Log\LoggerInterface;
-use OCP\Notification\IManager as NotificationManager;
+use OCA\StickyNotes\Service\NotificationService;
 
 class NoteController extends Controller {
     public function __construct(
@@ -29,10 +28,9 @@ class NoteController extends Controller {
         private ShareMapper $shareMapper,
         private IUserSession $userSession,
         private IGroupManager $groupManager,
-        private NotificationManager $notificationManager,
+        private NotificationService $notifications,
         private IUserManager $userManager,
         private LoggerInterface $logger,
-        private IConfig $config,
     ) { parent::__construct(Application::APP_ID, $request); }
 
     private function uid(): string { return $this->userSession->getUser()?->getUID() ?? ''; }
@@ -52,51 +50,18 @@ class NoteController extends Controller {
     }
 
     private function safeNotifyAssignment(Note $note, ?string $target): void {
-        if ($target === null || $target === $this->uid()) {
-            return;
-        }
-
-        $mode = $this->config->getUserValue(
-            $note->getOwnerUid(),
-            Application::APP_ID,
-            'notification_mode',
-            'all'
-        );
-
-        if ($mode === 'none') {
-            return;
-        }
-
-        $isGroup = str_starts_with($target, 'group:');
-
-        if ($isGroup && !in_array($mode, ['all', 'group'], true)) {
-            return;
-        }
-
-        if (!$isGroup && !in_array($mode, ['all', 'individual'], true)) {
-            return;
-        }
-
+        if ($target === null) return;
         try {
-            if ($isGroup) {
-                $gid = substr($target, 6);
-                $group = $this->groupManager->get($gid);
-                if ($group !== null) {
-                    foreach ($group->getUsers() as $user) {
-                        if ($user->getUID() !== $note->getOwnerUid()) {
-                            $this->notifyAssignment($note, $user->getUID());
-                        }
-                    }
-                }
-            } else {
-                $this->notifyAssignment($note, $target);
+            $event = str_starts_with($target, 'group:')
+                ? NotificationService::EVENT_ASSIGNED_GROUP
+                : NotificationService::EVENT_ASSIGNED_USER;
+            foreach ($this->notifications->recipientsForAssignment($note) as $recipient) {
+                $this->notifications->send($note, $recipient, $event, $this->uid());
             }
         } catch (\Throwable $e) {
             $this->logger->warning('Sticky Notes assignment notification failed', [
-                'app' => Application::APP_ID,
-                'exception' => $e,
-                'noteId' => $note->getId(),
-                'assignedUid' => $target,
+                'app' => Application::APP_ID, 'exception' => $e,
+                'noteId' => $note->getId(), 'assignedUid' => $target,
             ]);
         }
     }
@@ -168,9 +133,19 @@ class NoteController extends Controller {
     #[NoAdminRequired]
     public function complete(int $id): DataResponse {
         try { $note = $this->noteMapper->findForUser($id, $this->uid()); } catch (DoesNotExistException) { return new DataResponse(['error'=>'Not found'], Http::STATUS_NOT_FOUND); }
-        $note->setCompletedAt($note->getCompletedAt() ? null : time());
+        $wasCompleted = $note->getCompletedAt() !== null;
+        $note->setCompletedAt($wasCompleted ? null : time());
         $note->setUpdatedAt(time());
-        return new DataResponse($this->noteMapper->update($note));
+        $saved = $this->noteMapper->update($note);
+        if ($note->getOwnerUid() !== $this->uid()) {
+            $this->notifications->send(
+                $saved,
+                $note->getOwnerUid(),
+                $wasCompleted ? NotificationService::EVENT_TASK_REOPENED : NotificationService::EVENT_TASK_COMPLETED,
+                $this->uid()
+            );
+        }
+        return new DataResponse($saved);
     }
 
     #[NoAdminRequired]
@@ -182,7 +157,7 @@ class NoteController extends Controller {
         $share->setNoteId($id); $share->setShareType($shareType); $share->setShareWith($shareWith);
         $share->setPermission($permission === 'edit' ? 'edit' : 'view'); $share->setCreatedAt(time());
         $saved = $this->shareMapper->insert($share);
-        if ($shareType === 'user' && $shareWith !== $this->uid()) $this->notifyShare($note, $shareWith);
+        if ($shareType === 'user' && $shareWith !== $this->uid()) $this->notifications->send($note, $shareWith, NotificationService::EVENT_SHARED, $this->uid());
         return new DataResponse($saved, Http::STATUS_CREATED);
     }
 
@@ -193,11 +168,4 @@ class NoteController extends Controller {
         $this->shareMapper->delete($share); return new DataResponse(['ok'=>true]);
     }
 
-    private function notifyAssignment(Note $note, string $uid): void { $this->sendNotification($note, $uid, 'assigned'); }
-    private function notifyShare(Note $note, string $uid): void { $this->sendNotification($note, $uid, 'shared'); }
-    private function sendNotification(Note $note, string $uid, string $subject): void {
-        $n = $this->notificationManager->createNotification();
-        $n->setApp(Application::APP_ID)->setUser($uid)->setDateTime(new \DateTime())->setObject('note', (string)$note->getId())->setSubject($subject, [(string)$note->getTitle(), $this->uid()]);
-        $this->notificationManager->notify($n);
-    }
 }

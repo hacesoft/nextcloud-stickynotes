@@ -2,7 +2,7 @@
 
 [English](DEVELOPMENT.md) | [Česky – rozcestník](README_CZ.md) | [← Documentation](README.md)
 
-Sticky Notes 1.0.0 is a native Nextcloud application.
+Sticky Notes 1.1.0 is a native Nextcloud application.
 
 ## Repository layout
 
@@ -42,7 +42,7 @@ Only the runtime content under `src/` belongs in the installed Nextcloud `custom
 
 The public application version is stored in `src/appinfo/info.xml`.
 
-Development-only revision labels should not be shown in the public 1.0.0 release.
+Development-only revision labels should not be shown in the public 1.1.0 release.
 
 ## Documentation
 
@@ -53,12 +53,12 @@ The two existing GitHub-hosted screenshots used by the project should retain the
 
 ## Nextcloud compatibility policy
 
-The project targets the newest Nextcloud major version actively used and tested by the project maintainer. Backward compatibility with older major versions is intentionally not maintained. For version 1.0.0, the supported target is Nextcloud 34. A later major version is declared supported only after the project itself has moved to it and the app has been tested there.
+The project targets the newest Nextcloud major version actively used and tested by the project maintainer. Backward compatibility with older major versions is intentionally not maintained. For version 1.1.0, the supported target is Nextcloud 34. A later major version is declared supported only after the project itself has moved to it and the app has been tested there.
 
-## Distribution layout planned for 1.1.0
+## Distribution layout in 1.1.0
 
 The Git repository may keep development material under `src/`, `docs/`, `release/`, and `old/`. Official distribution packages must contain a top-level `stickynotes/` application directory whose contents are the runtime tree expected by Nextcloud, without repository-only directories.
 
-A release build helper is planned for 1.1.0. It should read the version from `src/appinfo/info.xml`, validate required runtime directories, build a clean `stickynotes/` staging tree, and create distribution archives suitable for manual installation and later App Store signing/publishing.
+Version 1.1.0 includes `build-release.sh`. It reads the version from `src/appinfo/info.xml`, validates required runtime directories, builds a clean `stickynotes/` staging tree, and creates distribution archives suitable for manual installation and later App Store signing/publishing.
 
 Signing keys and certificates must never be committed to the repository.

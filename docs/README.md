@@ -1,8 +1,8 @@
-# Sticky Notes 1.0.0 documentation
+# Sticky Notes 1.1.0 documentation
 
 [English](README.md) | [Česky](README_CZ.md) | [← Main README](../README.md)
 
-This documentation describes the features of **Sticky Notes 1.0.0**.
+This documentation describes the features of **Sticky Notes 1.1.0**.
 
 ## User documentation
 
@@ -16,7 +16,7 @@ This documentation describes the features of **Sticky Notes 1.0.0**.
 ## Next release plan
 
 - [Roadmap 1.1.0](ROADMAP.md) – mobile UI, About section, ntfy integration, and repository preparation for official distribution.
-- [Notifications](NOTIFICATIONS.md) – current 1.0.0 behavior and the planned Nextcloud + ntfy notification model.
+- [Notifications](NOTIFICATIONS.md) – per-user Nextcloud notifications plus optional ntfy in version 1.1.0.
 
 ## Installation and maintenance
 

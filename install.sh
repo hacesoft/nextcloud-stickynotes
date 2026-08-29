@@ -5,7 +5,10 @@ APP_ID="stickynotes"
 APP_NAME="Sticky Notes"
 MIN_NC_MAJOR=34
 
+# Root of the Git project (where install.sh is located)
 PROJECT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+
+# Runtime application source tree
 APP_DIR="$PROJECT_DIR/src"
 
 WEB_CONTAINER=""
@@ -18,7 +21,7 @@ if [ "$(id -u)" -ne 0 ]; then
     die "Run this installer with: sudo sh install.sh"
 fi
 
-# Once the script is running through "sh", make it executable for convenience.
+# Make the installer executable for future runs.
 chmod 755 "$0" 2>/dev/null || true
 
 command -v docker >/dev/null 2>&1 || die "Docker was not found."
@@ -88,10 +91,20 @@ if [ -n "$NC_VERSION" ]; then
     esac
 fi
 
+# Validate the new src/ project layout before touching the running app.
+[ -d "$APP_DIR" ] || die "Application source directory is missing: $APP_DIR"
+
 for item in $RUNTIME_ITEMS; do
-    [ -e "$APP_DIR/$item" ] || die "Required application item is missing: $item"
+    [ -e "$APP_DIR/$item" ] || die "Required application item is missing in src/: $item"
 done
-[ -f "$APP_DIR/appinfo/info.xml" ] || die "appinfo/info.xml is missing."
+
+[ -f "$APP_DIR/appinfo/info.xml" ] || die "src/appinfo/info.xml is missing."
+
+SOURCE_VERSION="$(sed -n 's:.*<version>\([^<]*\)</version>.*:\1:p' "$APP_DIR/appinfo/info.xml" | head -n 1)"
+[ -n "$SOURCE_VERSION" ] || die "Could not determine application version from src/appinfo/info.xml."
+
+say "Sticky Notes source version: $SOURCE_VERSION"
+say "Source directory: $APP_DIR"
 
 TMP_LOCAL="$(mktemp -d)"
 trap 'rm -rf "$TMP_LOCAL"' EXIT HUP INT TERM
@@ -99,7 +112,7 @@ trap 'rm -rf "$TMP_LOCAL"' EXIT HUP INT TERM
 STAGE="$TMP_LOCAL/$APP_ID"
 mkdir -p "$STAGE"
 
-say "Preparing complete new runtime tree..."
+say "Preparing complete new runtime tree from src/..."
 for item in $RUNTIME_ITEMS; do
     cp -R "$APP_DIR/$item" "$STAGE/"
 done
@@ -107,20 +120,19 @@ done
 TARGET_DIR="/var/www/html/custom_apps/$APP_ID"
 NEW_DIR="/var/www/html/custom_apps/$APP_ID.new"
 REMOTE_TMP="/tmp/${APP_ID}.install.$$"
-STAMP="$(date +%Y%m%d-%H%M%S)"
 
-# Prepare the entire new application before touching the current one.
+# Build complete replacement before modifying the current installation.
 say "Uploading new application tree to temporary location..."
 docker exec "$WEB_CONTAINER" sh -c 'mkdir -p /var/www/html/custom_apps'
 docker exec "$WEB_CONTAINER" rm -rf "$REMOTE_TMP" "$NEW_DIR" >/dev/null 2>&1 || true
 docker exec "$WEB_CONTAINER" mkdir -p "$REMOTE_TMP"
 docker cp "$STAGE/." "$WEB_CONTAINER:$REMOTE_TMP/"
+
 docker exec "$WEB_CONTAINER" sh -c "
     mv '$REMOTE_TMP' '$NEW_DIR' &&
     chown -R www-data:www-data '$NEW_DIR'
 "
 
-# Check if an old version is present.
 OLD_PRESENT=0
 if docker exec "$WEB_CONTAINER" sh -c "test -d '$TARGET_DIR'"; then
     OLD_PRESENT=1
@@ -142,12 +154,13 @@ say "Activating new runtime tree..."
 docker exec "$WEB_CONTAINER" mv "$NEW_DIR" "$TARGET_DIR"
 docker exec "$WEB_CONTAINER" chown -R www-data:www-data "$TARGET_DIR"
 
-# If cron has a separate custom_apps volume, deploy there as well.
+# If cron uses a separate custom_apps volume, deploy there as well.
 if [ -n "$CRON_CONTAINER" ] && [ "$CRON_CONTAINER" != "$WEB_CONTAINER" ]; then
     if docker exec "$CRON_CONTAINER" sh -c "test -f '$TARGET_DIR/appinfo/info.xml'" >/dev/null 2>&1; then
         say "Shared custom_apps detected: cron container already sees the new application."
     else
         say "Cron container uses a separate custom_apps volume; deploying runtime tree there."
+
         CRON_TMP="/tmp/${APP_ID}.install.$$"
         CRON_NEW="/var/www/html/custom_apps/$APP_ID.new"
 
@@ -155,6 +168,7 @@ if [ -n "$CRON_CONTAINER" ] && [ "$CRON_CONTAINER" != "$WEB_CONTAINER" ]; then
         docker exec "$CRON_CONTAINER" rm -rf "$CRON_TMP" "$CRON_NEW" "$TARGET_DIR" >/dev/null 2>&1 || true
         docker exec "$CRON_CONTAINER" mkdir -p "$CRON_TMP"
         docker cp "$STAGE/." "$CRON_CONTAINER:$CRON_TMP/"
+
         docker exec "$CRON_CONTAINER" sh -c "
             mv '$CRON_TMP' '$CRON_NEW' &&
             chown -R www-data:www-data '$CRON_NEW' &&
@@ -179,14 +193,17 @@ docker exec -u www-data "$WEB_CONTAINER" php /var/www/html/occ upgrade
 say "Checking application state..."
 docker exec -u www-data "$WEB_CONTAINER" php /var/www/html/occ app:list | grep -A1 -B1 "$APP_ID" || true
 
-
 say "Verifying deployed Sticky Notes version..."
 DEPLOYED_VERSION="$(docker exec "$WEB_CONTAINER" sh -c "grep -o '<version>[^<]*</version>' '$TARGET_DIR/appinfo/info.xml' | sed 's#<version>##;s#</version>##'" 2>/dev/null || true)"
-[ "$DEPLOYED_VERSION" = "1.0.0" ] || die "Version verification failed. Expected 1.0.0, found: $DEPLOYED_VERSION"
 
-docker exec "$WEB_CONTAINER" sh -c "test -f '$TARGET_DIR/js/app-1.0.0.js'" || die "Missing deployed JavaScript asset."
-docker exec "$WEB_CONTAINER" sh -c "test -f '$TARGET_DIR/css/style-1.0.0.css'" || die "Missing deployed stylesheet."
-docker exec "$WEB_CONTAINER" sh -c "test -f '$TARGET_DIR/js/dashboard-1.0.0.js'" || die "Missing deployed Dashboard asset."
+[ "$DEPLOYED_VERSION" = "$SOURCE_VERSION" ] || \
+    die "Version verification failed. Source: $SOURCE_VERSION, deployed: $DEPLOYED_VERSION"
+
+# Verify that the main runtime directories made it into the container.
+for item in $RUNTIME_ITEMS; do
+    docker exec "$WEB_CONTAINER" sh -c "test -e '$TARGET_DIR/$item'" || \
+        die "Deployment verification failed. Missing: $TARGET_DIR/$item"
+done
 
 printf 'Sticky Notes version: %s\n' "$DEPLOYED_VERSION"
 say "Deployment verification: OK"
@@ -196,4 +213,5 @@ say "$APP_NAME deployment finished successfully."
 say "Web container: $WEB_CONTAINER"
 [ -n "$CRON_CONTAINER" ] && say "Cron container: $CRON_CONTAINER"
 say "Installed path: $TARGET_DIR"
-say "Project directory: $APP_DIR"
+say "Project directory: $PROJECT_DIR"
+say "Source directory: $APP_DIR"

@@ -1,0 +1,14 @@
+# Local/private signing material
+*.key
+*.csr
+*.crt
+certificates/
+
+# Build staging
+.build/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

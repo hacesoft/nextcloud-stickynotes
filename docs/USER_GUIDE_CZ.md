@@ -48,4 +48,4 @@ Sticky Notes obsahuje Dashboard widget, takže důležité lístečky mohou být
 
 ## Desktop, tablet a mobil
 
-Verze 1.0.0 je plně použitelná na desktopu. Editor vytvoření lístečku funguje také na mobilním zařízení, ale u hlavní stránky a některých dalších obrazovek byl zjištěn problém se šířkou a posouváním. Kompletní mobilní přizpůsobení všech obrazovek je plánováno pro verzi 1.1.0; viz [Roadmap 1.1.0](ROADMAP_CZ.md).
+Rozhraní je responzivní a je určeno pro desktop, tablet i mobilní zařízení. Editor a další dialogy se přizpůsobují dostupnému prostoru.

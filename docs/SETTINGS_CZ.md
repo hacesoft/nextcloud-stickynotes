@@ -6,38 +6,30 @@ Nastavení aplikace se otevírá pomocí **ozubeného kolečka**. Správa katego
 
 ## Nastavení widgetu
 
-Lze nastavit počet:
+Lze nastavit počet sloupců a řádků ve widgetu. Tyto hodnoty určují maximální rozložení lístečků v Dashboard widgetu.
 
-- sloupců ve widgetu,
-- řádků ve widgetu.
+## Stránkování a rozložení
 
-Tyto hodnoty určují maximální rozložení lístečků v Dashboard widgetu.
+Lze nastavit počet lístečků na stránku a šířku pracovní plochy. Verze 1.1.0 obsahuje nové responzivní chování hlavní stránky, filtrů, stránkování, nastavení, kategorií a dialogů. Na úzkém telefonu se hlavní seznam přepne na jeden sloupec a prvky se nesmí roztahovat mimo viewport.
 
-## Stránkování
-
-Aplikace podporuje nastavení počtu lístečků na stránku. Stránkování pomáhá při větším množství položek.
-
-## Rozložení hlavní obrazovky
-
-Verze 1.0.0 je plně použitelná na desktopu. Editor nového lístečku je použitelný také na mobilním zařízení, ale u hlavní stránky, některých přehledů a dialogů nastavení byl zjištěn problém s šířkou a posouváním stránky. Kompletní mobilní responzivita všech obrazovek je proto zařazena do verze 1.1.0.
+Tato úprava je součástí 1.1.0 a musí být prakticky ověřena na telefonu, tabletu a desktopu před finálním vydáním.
 
 ## Notifikace
 
-Sticky Notes 1.0.0 používá interní notifikační mechanismus Nextcloudu pro události, které aplikace aktuálně podporuje. Rozšířený per-user systém s volbou událostí a volitelným kanálem ntfy je plánován pro verzi 1.1.0. Podrobnosti jsou v [Notifikace](NOTIFICATIONS_CZ.md).
+Každý uživatel má vlastní notifikační nastavení. Může samostatně zapnout interní Nextcloud notifikace a volitelné ntfy. Pro ntfy lze zadat server, topic a volitelný access token a konfiguraci ověřit tlačítkem **Odeslat testovací notifikaci**.
+
+Dále lze vybírat události: přímé přiřazení, přiřazení skupině, sdílení, dokončení/znovuotevření úkolu a upozornění na termín 24 hodin, 1 hodinu a v okamžiku termínu. Podrobnosti jsou v [Notifikace](NOTIFICATIONS_CZ.md).
 
 ## Vzhled lístečků
 
-Aplikace podporuje volitelný přirozený náklon a stíny lístečků. Kategorie mohou mít vlastní barvy, ikony a styly.
-
-Správa kategorií je podrobněji popsána v [Kategorie a vzhled](CATEGORIES_CZ.md).
+Aplikace podporuje volitelný přirozený náklon a stíny lístečků. Kategorie mohou mít vlastní barvy, ikony a styly. Správa kategorií je podrobněji popsána v [Kategorie a vzhled](CATEGORIES_CZ.md).
 
 ## Nápověda
 
-Význam jednotlivých nastavení má být v rozhraní dostupný přímo u příslušných voleb, aby uživatel nemusel znát jejich funkci předem.
-
+Volba **Zobrazit podrobnou nápovědu** zobrazí doplňující vysvětlení u nastavení.
 
 ## O aplikaci
 
-Samostatná sekce **O aplikaci / About** je plánována pro verzi 1.1.0. Má zobrazovat minimálně název aplikace, verzi, autora **hacesoft**, licenci a klikací odkaz na projekt:
+Sekce **O aplikaci / About** zobrazuje název aplikace, verzi, autora **hacesoft**, licenci a klikací odkaz na projekt:
 
 `https://github.com/hacesoft/nextcloud-stickynotes`

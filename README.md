@@ -4,7 +4,7 @@
 
 <img width="1181" height="579" alt="Sticky Notes – main application view" src="https://github.com/user-attachments/assets/71fd81a9-5828-4c0e-9160-fc8b3ec76c65" />
 
-**Version 1.0.0**
+**Version 1.1.0**
 
 Sticky Notes is a native Nextcloud application for quick notes, personal sticky notes, and lightweight family or team tasks. It runs directly inside Nextcloud and does not require a separate application container.
 
@@ -22,7 +22,10 @@ Sticky Notes is a native Nextcloud application for quick notes, personal sticky 
 - system and personal categories with icons and custom styles,
 - optional natural note tilt and shadows,
 - Dashboard widget,
-- assignment notifications,
+- responsive layouts for the main page, dialogs, settings, and category management,
+- built-in Nextcloud notifications plus optional per-user ntfy notifications,
+- assignment, sharing, completion/reopening and due-time notification events,
+- About section with version, author, project link and license,
 - multiple UI languages.
 
 ## Dashboard widget
@@ -39,7 +42,7 @@ It contains the user guide, editor, categories, sharing, Dashboard widget, setti
 
 ## Compatibility
 
-Sticky Notes 1.0.0 is developed and tested for **Nextcloud 34**. The project intentionally does not maintain backward compatibility with earlier Nextcloud major releases. Support for a later major release will be added only after the project moves to that release and the app is tested there.
+Sticky Notes 1.1.0 is developed and tested for **Nextcloud 34**. The project intentionally does not maintain backward compatibility with earlier Nextcloud major releases. Support for a later major release will be added only after the project moves to that release and the app is tested there.
 
 ## Quick links
 
@@ -48,6 +51,8 @@ Sticky Notes 1.0.0 is developed and tested for **Nextcloud 34**. The project int
 - [User guide](docs/USER_GUIDE.md)
 - [Settings](docs/SETTINGS.md)
 - [Dashboard widget](docs/DASHBOARD.md)
+- [Notifications](docs/NOTIFICATIONS.md)
+- [Version 1.1.0 design and implementation](docs/ROADMAP.md)
 
 ## Data and privacy
 
@@ -55,7 +60,7 @@ The application uses Nextcloud's local users, groups, database, and notification
 
 ## Privacy and external services
 
-Version 1.0.0 uses Nextcloud users, groups, database storage, and the built-in Nextcloud notification system. It does not require an external cloud service for normal operation. Optional ntfy integration is planned for version 1.1.0.
+Version 1.1.0 uses Nextcloud users, groups, database storage, and the built-in Nextcloud notification system. It does not require an external cloud service for normal operation. Version 1.1.0 adds optional per-user ntfy integration alongside Nextcloud notifications.
 
 ## License
 

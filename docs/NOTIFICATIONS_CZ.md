@@ -2,63 +2,37 @@
 
 [Česky](NOTIFICATIONS_CZ.md) | [English](NOTIFICATIONS.md) | [← Dokumentace](README_CZ.md)
 
-## Verze 1.0.0
+## Verze 1.1.0
 
-Sticky Notes 1.0.0 používá interní notifikační mechanismus Nextcloudu pro podporované události, například při přiřazení úkolu. Externí ntfy integrace není součástí 1.0.0.
+Sticky Notes 1.1.0 používá dva nezávislé notifikační kanály: interní notifikace Nextcloudu a volitelně ntfy. Nastavení je **pro každého uživatele samostatné**.
 
-## Návrh pro 1.1.0
+Každý uživatel může zapnout nebo vypnout Nextcloud notifikace, zapnout ntfy a zadat vlastní URL serveru, topic a volitelný access token. Token je uložen zašifrovaně pomocí kryptografické služby Nextcloudu a není vracen zpět do webového rozhraní.
 
-Notifikační systém bude navržen jako vícekanálový. Událost vznikne jednou a samostatná notifikační vrstva rozhodne, který uživatel ji má dostat a přes který povolený kanál.
+## Události
 
-```text
-Událost Sticky Notes
-        │
-        ├── NextcloudNotificationProvider
-        │
-        └── NtfyNotificationProvider
-```
+Uživatel může samostatně povolit nebo zakázat upozornění pro:
 
-Tím nebude aplikační logika přímo závislá na ntfy a v budoucnu lze přidat další kanál bez přepisování samotných událostí.
+- přímé přiřazení lístečku nebo úkolu,
+- přiřazení jeho skupině,
+- sdílení lístečku,
+- dokončení úkolu, který vytvořil,
+- opětovné otevření takového úkolu,
+- termín do 24 hodin,
+- termín do 1 hodiny,
+- dosažení termínu.
 
-## Uživatelské nastavení
+Při přiřazení skupině se vyhodnocuje nastavení každého člena skupiny samostatně.
 
-Konfigurace ntfy bude **per-user**. Každý uživatel si nastaví vlastní server, topic, případný token a jednotlivé preference. Topic ani autentizační údaje se nesmí zobrazovat ostatním uživatelům.
+## ntfy
 
-Předpokládaná nastavení:
+ntfy je volitelné. Uživatel může použít veřejnou službu nebo vlastní ntfy server. V nastavení je tlačítko **Odeslat testovací notifikaci**, kterým lze konfiguraci okamžitě ověřit.
 
-- interní Nextcloud notifikace zapnuto/vypnuto,
-- ntfy zapnuto/vypnuto,
-- URL ntfy serveru,
-- topic,
-- volitelný access token,
-- tlačítko **Odeslat testovací oznámení**.
+Externí zpráva obsahuje pouze stručný typ události, název lístečku nebo úkolu a odkaz zpět do autentizované aplikace. **Obsah lístečku ani identita uživatele, který akci provedl, se do ntfy neposílají.** Díky tomu může ntfy sloužit jako jednoduchý společný signalizační kanál pro upozornění z různých aplikací a systémů, aniž by do něj Sticky Notes posílaly detailní obsah.
 
-## Události a kanály
+Interní Nextcloud notifikace mohou obsahovat podrobnější kontext. Notifikace má odkaz na konkrétní lísteček a také akci **Otevřít lísteček**, aby šel cílový lísteček otevřít přímo i z desktopového panelu oznámení.
 
-Uživatel má mít možnost samostatně zvolit kanál pro jednotlivé události, například:
+## Upozornění na termín
 
-| Událost | Nextcloud | ntfy |
-| --- | :---: | :---: |
-| Lísteček přiřazen přímo mně | volitelné | volitelné |
-| Lísteček přiřazen mé skupině | volitelné | volitelné |
-| Lísteček se mnou sdílen | volitelné | volitelné |
-| Můj zadaný úkol byl dokončen | volitelné | volitelné |
-| Dokončený úkol byl znovu otevřen | volitelné | volitelné |
-| Blíží se termín | volitelné | volitelné |
-| Termín dosažen / překročen | volitelné | volitelné |
+Kontrolu termínů provádí background job Sticky Notes každých přibližně 5 minut. Skutečný okamžik doručení proto závisí na tom, jak často Nextcloud spouští své úlohy na pozadí. Pro spolehlivé připomínky je doporučen systémový cron Nextcloudu.
 
-## Připomínky termínu
-
-Pro úkoly s termínem bude vhodné nabídnout více okamžiků upozornění, například jeden den předem, jednu hodinu předem, v okamžiku termínu nebo jinou uživatelem zvolenou hodnotu. Přesný model bude uzavřen při implementaci 1.1.0.
-
-## Příklad toku události
-
-Uživatel A vytvoří úkol a přiřadí jej uživateli B. Uživatel B dostane oznámení podle vlastních preferencí. Když B úkol dokončí, autor/zadavatel A může dostat oznámení o dokončení, pokud má tuto událost povolenou.
-
-U přiřazení skupině se vyhodnocují preference každého příjemce samostatně.
-
-## Soukromí
-
-Do externího ntfy kanálu se nemá automaticky posílat celý obsah soukromého lístečku. Oznámení by mělo obsahovat jen nezbytné informace, například typ události, stručný název, termín a odkaz zpět do autentizované aplikace Sticky Notes.
-
-Přihlašovací token a další citlivá nastavení se nesmí logovat ani zpřístupnit jiným uživatelům.
+Stejná připomínka se pro stejný termín neposílá opakovaně. Pokud se termín úkolu změní, nový termín může vytvořit novou sadu upozornění.

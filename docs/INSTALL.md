@@ -2,7 +2,7 @@
 
 [English](INSTALL.md) | [Česky](INSTALL_CZ.md) | [← Documentation](README.md)
 
-This page describes installation of Sticky Notes 1.0.0 from the source repository. The application supports **Nextcloud 34**.
+This page describes installation of Sticky Notes 1.1.0 from the source repository. The application supports **Nextcloud 34**.
 
 ## 1. Requirements
 

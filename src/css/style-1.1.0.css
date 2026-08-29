@@ -487,3 +487,131 @@ body.sn-modal-open{overflow:hidden}
 /* Widget text remains legible on every category background. */
 .sn-widget-card{color:var(--sn-text,#171717)!important}
 .sn-widget-card .sn-widget-title,.sn-widget-card .sn-widget-content{color:inherit!important}
+
+/* ================= v1.1.0 MOBILE + NOTIFICATIONS ================= */
+#stickynotes-app{box-sizing:border-box;width:100%;min-width:0;overflow-x:hidden}
+#stickynotes-app *{box-sizing:border-box}
+.sn-toolbar{min-width:0}
+.sn-toolbar>div:first-child{min-width:0}
+.sn-toolbar-actions{flex-wrap:wrap;justify-content:flex-end}
+.sn-filters,.sn-category-filters{min-width:0}
+.sn-board{grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr));min-width:0}
+.sn-card{min-width:0;max-width:100%;width:100%}
+.sn-card-head,.sn-card-footer{min-width:0}
+.sn-card-head strong,.sn-content{overflow-wrap:anywhere}
+.sn-pagination{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;margin:20px 0}
+
+.sn-notification-channels{display:flex;gap:18px;flex-wrap:wrap;margin:10px 0 14px}
+.sn-notification-channels .sn-check-setting{flex-direction:row!important;align-items:center;gap:8px}
+.sn-notification-channels input,.sn-event-grid input{width:auto!important;min-height:auto!important}
+.sn-ntfy-settings{padding:14px;border:1px solid var(--color-border);border-radius:10px;background:var(--color-background-hover);transition:opacity .15s}
+.sn-ntfy-settings.sn-disabled{opacity:.55}
+.sn-event-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px;margin:10px 0}
+.sn-event-grid label{display:flex!important;flex-direction:row!important;align-items:flex-start!important;gap:8px!important;min-width:0}
+.sn-test-status{align-self:center;overflow-wrap:anywhere;opacity:.8}
+.sn-about-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.sn-about-grid a{overflow-wrap:anywhere}
+
+@media (max-width:760px){
+    #content-vue,#content,#app-content,.app-content{min-width:0!important;max-width:100vw!important}
+    #stickynotes-app{
+        width:100%!important;
+        max-width:100%!important;
+        min-width:0!important;
+        margin:0!important;
+        padding:12px!important;
+        overflow-x:hidden!important;
+    }
+    .sn-toolbar{
+        display:flex!important;
+        flex-direction:column!important;
+        align-items:stretch!important;
+        gap:12px!important;
+    }
+    .sn-toolbar-actions{display:grid!important;grid-template-columns:auto minmax(0,1fr) auto!important;width:100%!important;gap:8px!important}
+    .sn-toolbar-actions button{max-width:100%!important}
+    .sn-title-row{flex-wrap:wrap!important}
+    .sn-stats{gap:10px!important}
+
+    .sn-category-filters{
+        display:flex!important;
+        flex-wrap:nowrap!important;
+        overflow-x:auto!important;
+        overflow-y:hidden!important;
+        width:100%!important;
+        max-width:100%!important;
+        padding-bottom:5px!important;
+        -webkit-overflow-scrolling:touch;
+    }
+    .sn-category-filters button{flex:0 0 auto!important;white-space:nowrap!important}
+    .sn-filters{
+        display:grid!important;
+        grid-template-columns:repeat(2,minmax(0,1fr))!important;
+        width:100%!important;
+        gap:8px!important;
+    }
+    .sn-filters button,.sn-filters select,.sn-filters input{width:100%!important;min-width:0!important;margin:0!important}
+    .sn-filters #sn-search{grid-column:1/-1!important}
+
+    .sn-board{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:14px!important;width:100%!important;min-width:0!important}
+    .sn-card{width:100%!important;min-width:0!important;max-width:100%!important;transform:none!important;padding:16px!important}
+    .sn-card:hover{transform:none!important}
+    .sn-card-footer{flex-direction:column!important;align-items:stretch!important}
+    .sn-actions{position:static!important;align-self:flex-end!important;flex-wrap:wrap!important}
+    .sn-content{margin-bottom:18px!important}
+
+    .sn-overlay{touch-action:pan-y;overflow-y:auto!important;overflow-x:hidden!important}
+    .sn-modal,.sn-note-modal,.sn-settings-panel,.sn-style-panel{
+        width:100%!important;max-width:100%!important;min-width:0!important;
+        min-height:100dvh!important;max-height:none!important;
+        margin:0!important;padding:12px!important;border-radius:0!important;
+        overflow:visible!important;
+    }
+    .sn-settings-section{min-width:0!important}
+    .sn-settings-grid,.sn-event-grid,.sn-about-grid,.sn-category-editor-surface,.sn-category-fields{grid-template-columns:minmax(0,1fr)!important}
+    .sn-settings-grid>* ,.sn-event-grid>* ,.sn-about-grid>*{min-width:0!important}
+    .sn-settings-panel input,.sn-settings-panel select,.sn-settings-panel textarea{max-width:100%!important;min-width:0!important}
+    .sn-notification-channels{flex-direction:column!important;gap:8px!important}
+    .sn-ntfy-settings{padding:10px!important}
+
+    .sn-category-list-row{grid-template-columns:minmax(0,1fr)!important;align-items:stretch!important}
+    .sn-category-list-main{grid-template-columns:minmax(0,1fr)!important;width:100%!important}
+    .sn-cat-mini{width:100%!important;max-width:100%!important}
+    .sn-category-list-actions{justify-content:flex-end!important;flex-wrap:wrap!important}
+    .sn-section-head{align-items:flex-start!important;flex-wrap:wrap!important}
+    .sn-section-head button{width:100%!important}
+
+    .sn-share-results,.sn-picker-results{max-width:100%!important}
+    .sn-pagination button{min-width:42px!important;min-height:42px!important}
+}
+
+@media (max-width:420px){
+    .sn-filters{grid-template-columns:minmax(0,1fr)!important}
+    .sn-filters #sn-search{grid-column:auto!important}
+    .sn-toolbar-actions{grid-template-columns:auto minmax(0,1fr) auto!important}
+    .sn-toolbar-actions .primary{font-size:.92rem!important;padding-left:8px!important;padding-right:8px!important}
+}
+
+
+/* ================= v1.1.0 NOTIFICATION ACTION + EMOJI PICKER ================= */
+.sn-clear-token{display:flex!important;flex-direction:row!important;align-items:center!important;gap:8px!important;margin-top:10px!important}
+.sn-clear-token input{width:auto!important;min-height:auto!important;margin:0!important}
+.sn-ntfy-privacy{margin:8px 0 12px;padding:10px 12px;border-left:4px solid var(--color-primary-element);background:var(--color-background-hover);border-radius:6px;line-height:1.4}
+.sn-emoji-picker{position:relative;z-index:10030;width:min(560px,100%);max-height:390px;margin:6px 0 10px;padding:10px;border:1px solid var(--color-border);border-radius:10px;background:var(--color-main-background);box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.sn-emoji-picker[hidden]{display:none!important}
+.sn-emoji-picker-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;margin-bottom:8px}
+.sn-emoji-picker-head input{width:100%!important;min-width:0!important;margin:0!important}
+.sn-emoji-close{min-width:36px!important;min-height:36px!important;margin:0!important}
+.sn-emoji-tabs{display:flex;gap:4px;overflow-x:auto;padding:2px 0 8px;-webkit-overflow-scrolling:touch}
+.sn-emoji-tabs button{flex:0 0 auto;min-width:38px!important;min-height:36px!important;padding:4px 7px!important;font-size:19px!important;border-radius:8px!important}
+.sn-emoji-tabs button.active{outline:2px solid var(--color-primary-element);outline-offset:-2px;background:var(--color-background-hover)!important}
+.sn-emoji-grid{display:grid;grid-template-columns:repeat(9,minmax(38px,1fr));gap:4px;max-height:270px;overflow-y:auto;padding:3px}
+.sn-emoji-grid button{display:flex;align-items:center;justify-content:center;min-width:0!important;width:100%!important;min-height:42px!important;padding:3px!important;font-size:24px!important;line-height:1!important;border-radius:7px!important}
+.sn-emoji-grid button:hover,.sn-emoji-grid button:focus-visible{background:var(--color-background-hover)!important;outline:2px solid var(--color-primary-element)!important}
+.sn-emoji-empty{grid-column:1/-1;padding:22px;text-align:center;opacity:.7}
+@media (max-width:700px){
+ .sn-emoji-picker{width:100%;max-height:48dvh;padding:8px;margin:5px 0 8px}
+ .sn-emoji-grid{grid-template-columns:repeat(7,minmax(38px,1fr));max-height:32dvh}
+ .sn-emoji-grid button{min-height:44px!important;font-size:25px!important}
+}
+@media (max-width:430px){.sn-emoji-grid{grid-template-columns:repeat(6,minmax(38px,1fr))}}

@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace OCA\StickyNotes\Controller;
 
 use OCA\StickyNotes\AppInfo\Application;
+use OCA\StickyNotes\Service\NotificationService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http;
 use OCP\IConfig;
 use OCP\IRequest;
 use OCP\IUserSession;
@@ -16,13 +18,12 @@ class SettingsController extends Controller {
         IRequest $request,
         private IConfig $config,
         private IUserSession $session,
+        private NotificationService $notifications,
     ) {
         parent::__construct(Application::APP_ID, $request);
     }
 
-    private function uid(): string {
-        return $this->session->getUser()?->getUID() ?? '';
-    }
+    private function uid(): string { return $this->session->getUser()?->getUID() ?? ''; }
 
     private function jsonArray(string $key): array {
         $raw = $this->config->getUserValue($this->uid(), Application::APP_ID, $key, '[]');
@@ -44,21 +45,28 @@ class SettingsController extends Controller {
             'widgetRows' => (int)$this->config->getUserValue($uid, Application::APP_ID, 'widget_rows', '4'),
             'pageSize' => (int)$this->config->getUserValue($uid, Application::APP_ID, 'page_size', '24'),
             'layoutWidth' => $this->config->getUserValue($uid, Application::APP_ID, 'layout_width', 'full'),
-            'notificationMode' => $this->config->getUserValue($uid, Application::APP_ID, 'notification_mode', 'all'),
             'helpMode' => $this->config->getUserValue($uid, Application::APP_ID, 'help_mode', '0') === '1',
             'randomTilt' => $this->config->getUserValue($uid, Application::APP_ID, 'random_tilt', '1') === '1',
             'noteShadow' => $this->config->getUserValue($uid, Application::APP_ID, 'note_shadow', '1') === '1',
+            'notifications' => $this->notifications->getPreferences($uid, false),
         ]);
     }
 
     #[NoAdminRequired]
-    public function save(string $baseColor = '#fff59d', string $markerMode = 'header', int $markerSize = 7, string $sortMode = 'manual', int $widgetColumns = 2, int $widgetRows = 4, int $pageSize = 24, string $layoutWidth = 'full', string $notificationMode = 'all', bool $helpMode = false, bool $randomTilt = true, bool $noteShadow = true): DataResponse {
+    public function save(
+        string $baseColor = '#fff59d', string $markerMode = 'header', int $markerSize = 7,
+        string $sortMode = 'manual', int $widgetColumns = 2, int $widgetRows = 4,
+        int $pageSize = 24, string $layoutWidth = 'full', bool $helpMode = false,
+        bool $randomTilt = true, bool $noteShadow = true,
+        bool $nextcloudEnabled = true, bool $ntfyEnabled = false,
+        string $ntfyServer = 'https://ntfy.sh', string $ntfyTopic = '', ?string $ntfyToken = null,
+        array $notificationEvents = []
+    ): DataResponse {
         $modes = ['full','header','left','corner','border','badge'];
         if (!in_array($markerMode, $modes, true)) $markerMode = 'header';
         if (!preg_match('/^#[0-9a-fA-F]{6}$/', $baseColor)) $baseColor = '#fff59d';
         $markerSize = max(2, min(16, $markerSize));
-        $sortModes = ['manual','category','newest','oldest'];
-        if (!in_array($sortMode, $sortModes, true)) $sortMode = 'manual';
+        if (!in_array($sortMode, ['manual','category','newest','oldest'], true)) $sortMode = 'manual';
         $uid = $this->uid();
         $this->config->setUserValue($uid, Application::APP_ID, 'base_color', strtolower($baseColor));
         $this->config->setUserValue($uid, Application::APP_ID, 'marker_mode', $markerMode);
@@ -66,19 +74,31 @@ class SettingsController extends Controller {
         $this->config->setUserValue($uid, Application::APP_ID, 'sort_mode', $sortMode);
         $widgetColumns = max(1, min(4, $widgetColumns));
         $widgetRows = max(1, min(6, $widgetRows));
-        $allowedPageSizes = [12,24,36,48,72];
-        if (!in_array($pageSize, $allowedPageSizes, true)) $pageSize = 24;
+        if (!in_array($pageSize, [12,24,36,48,72], true)) $pageSize = 24;
         $this->config->setUserValue($uid, Application::APP_ID, 'widget_columns', (string)$widgetColumns);
         $this->config->setUserValue($uid, Application::APP_ID, 'widget_rows', (string)$widgetRows);
         $this->config->setUserValue($uid, Application::APP_ID, 'page_size', (string)$pageSize);
         $layoutWidth = in_array($layoutWidth, ['full','centered'], true) ? $layoutWidth : 'full';
-        $notificationMode = in_array($notificationMode, ['all','individual','group','none'], true) ? $notificationMode : 'all';
         $this->config->setUserValue($uid, Application::APP_ID, 'layout_width', $layoutWidth);
-        $this->config->setUserValue($uid, Application::APP_ID, 'notification_mode', $notificationMode);
         $this->config->setUserValue($uid, Application::APP_ID, 'help_mode', $helpMode ? '1' : '0');
         $this->config->setUserValue($uid, Application::APP_ID, 'random_tilt', $randomTilt ? '1' : '0');
         $this->config->setUserValue($uid, Application::APP_ID, 'note_shadow', $noteShadow ? '1' : '0');
+        try {
+            $this->notifications->savePreferences($uid, $nextcloudEnabled, $ntfyEnabled, $ntfyServer, $ntfyTopic, $ntfyToken, $notificationEvents);
+        } catch (\InvalidArgumentException $e) {
+            return new DataResponse(['error' => $e->getMessage()], Http::STATUS_BAD_REQUEST);
+        }
         return $this->get();
+    }
+
+    #[NoAdminRequired]
+    public function testNtfy(): DataResponse {
+        try {
+            $this->notifications->testNtfy($this->uid());
+            return new DataResponse(['ok' => true]);
+        } catch (\Throwable $e) {
+            return new DataResponse(['error' => $e->getMessage()], Http::STATUS_BAD_REQUEST);
+        }
     }
 
     #[NoAdminRequired]

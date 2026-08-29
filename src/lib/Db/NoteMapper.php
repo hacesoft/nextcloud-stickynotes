@@ -58,4 +58,16 @@ class NoteMapper extends QBMapper {
             ->orderBy('n.updated_at', 'DESC');
         return $this->findEntities($qb);
     }
+
+    public function findPendingDueBefore(int $timestamp): array {
+        $qb = $this->db->getQueryBuilder();
+        $qb->select('*')
+            ->from('stickynotes_notes')
+            ->where($qb->expr()->eq('type', $qb->createNamedParameter('task')))
+            ->andWhere($qb->expr()->isNull('completed_at'))
+            ->andWhere($qb->expr()->isNotNull('due_at'))
+            ->andWhere($qb->expr()->lte('due_at', $qb->createNamedParameter($timestamp, IQueryBuilder::PARAM_INT)))
+            ->orderBy('due_at', 'ASC');
+        return $this->findEntities($qb);
+    }
 }

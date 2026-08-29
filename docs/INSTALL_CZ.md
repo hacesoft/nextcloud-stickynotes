@@ -2,7 +2,7 @@
 
 [Česky](INSTALL_CZ.md) | [English](INSTALL.md) | [← Dokumentace](README_CZ.md)
 
-Tato stránka popisuje instalaci Sticky Notes 1.0.0 ze zdrojového repozitáře. Aplikace podporuje **Nextcloud 34**.
+Tato stránka popisuje instalaci Sticky Notes 1.1.0 ze zdrojového repozitáře. Aplikace podporuje **Nextcloud 34**.
 
 ## 1. Co budete potřebovat
 

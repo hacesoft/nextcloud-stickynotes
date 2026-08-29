@@ -18,7 +18,7 @@ class StickyNotesWidget implements IWidget {
     public function getIconClass(): string { return 'icon-sticky-notes'; }
     public function getUrl(): ?string { return $this->url->linkToRouteAbsolute('stickynotes.page.index'); }
     public function load(): void {
-        Util::addStyle(Application::APP_ID, 'style-1.0.0');
-        Util::addScript(Application::APP_ID, 'dashboard-1.0.0');
+        Util::addStyle(Application::APP_ID, 'style-1.1.1');
+        Util::addScript(Application::APP_ID, 'dashboard-1.1.1');
     }
 }

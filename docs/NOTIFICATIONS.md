@@ -2,30 +2,28 @@
 
 [English](NOTIFICATIONS.md) | [Česky](NOTIFICATIONS_CZ.md) | [← Documentation](README.md)
 
-## Version 1.0.0
+## Version 1.1.0
 
-Sticky Notes 1.0.0 uses the built-in Nextcloud notification mechanism for supported events such as task assignment. External ntfy delivery is not part of 1.0.0.
+Sticky Notes 1.1.0 supports two independent notification channels: built-in Nextcloud notifications and optional ntfy delivery. Preferences are stored **per user**.
 
-## Planned model for 1.1.0
+Each user can enable or disable Nextcloud notifications, enable ntfy, and configure a personal server URL, topic and optional access token. The token is encrypted through Nextcloud's crypto service and is not returned to the browser after saving.
 
-Notifications will use a channel-independent event layer. A Sticky Notes event is generated once and the notification service determines which user should receive it and through which enabled channel.
+## Events
 
-```text
-Sticky Notes event
-        │
-        ├── NextcloudNotificationProvider
-        │
-        └── NtfyNotificationProvider
-```
+Users can independently enable or disable notifications for direct assignments, group assignments, note sharing, completion of a task they created, reopening of such a task, a due time within 24 hours, a due time within 1 hour, and the moment the task becomes due.
 
-ntfy configuration will be per-user: server URL, topic, optional access token, channel enablement, and event preferences. A **Send test notification** action is planned.
+For group assignments, each group member's own preferences are evaluated separately.
 
-Users should be able to choose Nextcloud and/or ntfy independently for direct assignment, group assignment, sharing, completion of a task they created, reopening, approaching deadline, and deadline reached/overdue.
+## ntfy
 
-Group assignment notifications must respect the individual preferences of each group member.
+ntfy is optional. A user may use the public service or a self-hosted ntfy server. The settings page includes **Send test notification** to verify the configuration immediately.
 
-Deadline reminders may support several lead times, such as one day before, one hour before, at the deadline, or another user-selected value. The exact model will be finalized during 1.1.0 implementation.
+External messages contain only a short event description, the note/task title and a link back to the authenticated Sticky Notes application. **The note body and the identity of the user who performed the action are not sent to ntfy.** This makes ntfy suitable as a simple shared event channel for notifications from different applications and systems without sending detailed Sticky Notes content.
 
-## Privacy
+Built-in Nextcloud notifications may provide richer context. Each Sticky Notes notification links to the specific note and also includes an **Open note** action for reliable access from the desktop notification panel.
 
-The external ntfy message should not automatically contain the full private note body. Prefer only the event type, short title, deadline, and a link back to the authenticated Sticky Notes application. Tokens and other sensitive configuration must not be exposed to other users or logs.
+## Due reminders
+
+A Sticky Notes background job checks deadlines about every five minutes. Actual delivery time therefore depends on how frequently Nextcloud executes background jobs. System cron is recommended for reliable reminders.
+
+The same reminder is not repeatedly sent for the same due timestamp. Changing a task's due time can generate a fresh reminder sequence for the new deadline.

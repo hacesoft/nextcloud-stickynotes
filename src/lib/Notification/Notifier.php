@@ -22,14 +22,42 @@ class Notifier implements INotifier {
         $params = $notification->getSubjectParameters();
         $title = $params[0] ?? $l->t('Untitled note');
         $from = $params[1] ?? '';
-        if ($notification->getSubject() === 'assigned') {
-            $notification->setParsedSubject($l->t('%1$s assigned you a task: %2$s', [$from, $title]));
-        } elseif ($notification->getSubject() === 'shared') {
-            $notification->setParsedSubject($l->t('%1$s shared a sticky note with you: %2$s', [$from, $title]));
-        } else {
-            throw new UnknownNotificationException();
+        switch ($notification->getSubject()) {
+            case 'assigned':
+                $notification->setParsedSubject($l->t('%1$s assigned you a task: %2$s', [$from, $title]));
+                break;
+            case 'assigned_group':
+                $notification->setParsedSubject($l->t('%1$s assigned a task to your group: %2$s', [$from, $title]));
+                break;
+            case 'shared':
+                $notification->setParsedSubject($l->t('%1$s shared a sticky note with you: %2$s', [$from, $title]));
+                break;
+            case 'completed':
+                $notification->setParsedSubject($l->t('%1$s completed your task: %2$s', [$from, $title]));
+                break;
+            case 'reopened':
+                $notification->setParsedSubject($l->t('%1$s reopened your task: %2$s', [$from, $title]));
+                break;
+            case 'due_24h':
+                $notification->setParsedSubject($l->t('Task is due within 24 hours: %1$s', [$title]));
+                break;
+            case 'due_1h':
+                $notification->setParsedSubject($l->t('Task is due within 1 hour: %1$s', [$title]));
+                break;
+            case 'due_now':
+                $notification->setParsedSubject($l->t('Task is due now: %1$s', [$title]));
+                break;
+            default:
+                throw new UnknownNotificationException();
         }
-        $notification->setLink($this->url->linkToRouteAbsolute('stickynotes.page.index'));
+        $noteLink = $this->url->linkToRouteAbsolute('stickynotes.page.index') . '?note=' . rawurlencode($notification->getObjectId());
+        $notification->setLink($noteLink);
+        foreach ($notification->getActions() as $action) {
+            if ($action->getLabel() === 'open_note') {
+                $action->setParsedLabel($l->t('Open note'))->setLink($noteLink, 'GET');
+                $notification->addParsedAction($action);
+            }
+        }
         return $notification;
     }
 }

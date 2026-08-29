@@ -6,13 +6,14 @@ The editor is used both to create and modify sticky notes.
 
 ## Rich-text editor
 
-Content is not limited to plain text. Version 1.0.0 provides a rich-text editor with:
+Content is not limited to plain text. Version 1.1.0 provides a rich-text editor with:
 
 - headings,
 - basic text formatting,
 - lists,
 - links,
-- tables.
+- tables,
+- a categorized emoji library with recently used emoji.
 
 The editor behaves like a conventional text editor and lets the user see the formatted result on the note.
 
@@ -29,3 +30,8 @@ The application automatically adjusts text contrast according to the note backgr
 The editor also provides category, type, priority, due date, and user/group assignment controls.
 
 Category appearance is described in [Categories and appearance](CATEGORIES.md).
+
+
+## Emoji
+
+The **☺** button opens a local Unicode emoji library. Emoji are grouped into categories (smileys, people, animals, food, activities, travel, objects, symbols and flags). Recently used emoji are stored only in the browser local storage. The picker uses no external service and sends no data outside Nextcloud. Emoji are inserted at the current cursor position in the note title or body.

@@ -2,7 +2,7 @@
 
 [Česky](ROADMAP_CZ.md) | [English](ROADMAP.md) | [← Dokumentace](README_CZ.md)
 
-Tento dokument popisuje **plánované změny pro verzi 1.1.0**. Nejde o seznam funkcí dostupných ve vydání 1.0.0.
+Tento dokument zachycuje cíle vývoje **verze 1.1.0** a jejich současný stav implementace. Funkce musí být před finálním vydáním ověřeny v reálném Nextcloudu 34.
 
 ## Cíl verze 1.1.0
 
@@ -10,9 +10,9 @@ Verze 1.1.0 bude zaměřena na dokončení mobilního rozhraní, rozšíření n
 
 ## 1. Kompletní mobilní responzivita
 
-Na mobilním zařízení je ve verzi 1.0.0 použitelný editor vytvoření lístečku, ale u hlavní stránky, přehledů a některých nastavení může být zobrazena jen část rozhraní a stránka nemusí umožnit správný posun.
+Na mobilním zařízení je ve verzi 1.1.0 použitelný editor vytvoření lístečku, ale u hlavní stránky, přehledů a některých nastavení může být zobrazena jen část rozhraní a stránka nemusí umožnit správný posun.
 
-Pro 1.1.0 je plánováno:
+V 1.1.0 je implementováno a určeno k otestování:
 
 - hlavní stránka s lístečky v jednom sloupci na úzkých displejích,
 - žádný hlavní prvek širší než viewport,
@@ -23,7 +23,7 @@ Pro 1.1.0 je plánováno:
 - bezpečné použití `100dvh` a vlastního scrollování pouze tam, kde je to nutné,
 - kontrola všech obrazovek na telefonu, tabletu a desktopu.
 
-Funkční mobilní editor z 1.0.0 se při těchto změnách nesmí regresně poškodit.
+Funkční mobilní editor z 1.1.0 se při těchto změnách nesmí regresně poškodit.
 
 ## 2. O aplikaci / About
 
@@ -50,7 +50,7 @@ Každý uživatel bude moci podle návrhu nastavit:
 - které události chce přijímat přes jednotlivé kanály,
 - vlastní upozornění před termínem.
 
-Plánované typy událostí zahrnují zejména:
+Implementované typy událostí zahrnují:
 
 - lísteček přiřazen přímo uživateli,
 - lísteček přiřazen skupině uživatele,
@@ -70,7 +70,7 @@ Technický návrh je popsán v [Notifikace](NOTIFICATIONS_CZ.md).
 
 Projekt nebude cíleně udržovat zpětnou kompatibilitu s předchozími hlavními verzemi Nextcloudu.
 
-Pro Sticky Notes 1.0.0 a začátek vývoje 1.1.0 je cílovou a testovanou verzí **Nextcloud 34**. Podpora Nextcloud 35 bude deklarována teprve poté, co projekt přejde na Nextcloud 35 a aplikace na něm bude prakticky otestována. V takovém okamžiku nebude starší hlavní verze nadále aktivně testována.
+Pro Sticky Notes 1.1.0 a začátek vývoje 1.1.0 je cílovou a testovanou verzí **Nextcloud 34**. Podpora Nextcloud 35 bude deklarována teprve poté, co projekt přejde na Nextcloud 35 a aplikace na něm bude prakticky otestována. V takovém okamžiku nebude starší hlavní verze nadále aktivně testována.
 
 ## 5. Repozitář a distribuce
 
@@ -82,7 +82,7 @@ nextcloud-stickynotes/
 ├── docs/                 # dokumentace
 ├── release/              # aktuální distribuční balíčky
 ├── old/                  # archiv starších balíčků
-├── build-release.sh      # plánováno pro 1.1.0
+├── build-release.sh      # součást 1.1.0
 ├── install.sh
 ├── CHANGELOG.md
 ├── LICENSE
@@ -107,7 +107,7 @@ stickynotes/
 
 ## 6. Release build
 
-Pro 1.1.0 je plánován skript `build-release.sh`, který má:
+Verze 1.1.0 obsahuje skript `build-release.sh`, který:
 
 1. načíst verzi z `src/appinfo/info.xml`,
 2. ověřit povinné runtime adresáře,

@@ -20,5 +20,6 @@ return [
         ['name' => 'settings#get', 'url' => '/api/settings', 'verb' => 'GET'],
         ['name' => 'settings#save', 'url' => '/api/settings', 'verb' => 'PUT'],
         ['name' => 'settings#saveLayout', 'url' => '/api/layout', 'verb' => 'PUT'],
+        ['name' => 'settings#testNtfy', 'url' => '/api/settings/ntfy/test', 'verb' => 'POST'],
     ],
 ];

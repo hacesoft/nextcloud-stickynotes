@@ -48,4 +48,4 @@ Sticky Notes includes a Dashboard widget for seeing important notes without open
 
 ## Desktop, tablet, and mobile
 
-Version 1.0.0 is fully usable on desktop. The new-note editor also works on mobile, but the main page and some other screens have known width and scrolling problems. Complete mobile adaptation of all screens is planned for version 1.1.0; see [Roadmap 1.1.0](ROADMAP.md).
+The interface is responsive and intended for desktop, tablet, and mobile use. The editor and dialogs adapt to the available screen space.

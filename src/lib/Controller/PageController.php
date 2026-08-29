@@ -20,8 +20,8 @@ class PageController extends Controller {
     #[NoAdminRequired]
     #[NoCSRFRequired]
     public function index(): TemplateResponse {
-        Util::addStyle(Application::APP_ID, 'style-1.0.0');
-        Util::addScript(Application::APP_ID, 'app-1.0.0');
+        Util::addStyle(Application::APP_ID, 'style-1.1.1');
+        Util::addScript(Application::APP_ID, 'app-1.1.1');
         return new TemplateResponse(
             Application::APP_ID,
             'main',

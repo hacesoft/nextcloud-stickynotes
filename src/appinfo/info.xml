@@ -8,15 +8,29 @@
     <description><![CDATA[
 Sticky Notes adds quick notes and lightweight tasks directly to Nextcloud.
 Create colored sticky notes, share them with users or groups, assign tasks,
-set due dates and keep the most important notes visible on the Dashboard.
+set due dates, receive configurable notifications and keep important notes
+visible on the Dashboard.
     ]]></description>
-    <version>1.0.0</version>
+    <version>1.1.1</version>
     <licence>AGPL-3.0-or-later</licence>
-    <author>hacesoft</author>
+    <author homepage="https://github.com/hacesoft">hacesoft</author>
+    <documentation>
+        <user>https://github.com/hacesoft/nextcloud-stickynotes/blob/main/docs/USER_GUIDE.md</user>
+        <admin>https://github.com/hacesoft/nextcloud-stickynotes/blob/main/docs/INSTALL.md</admin>
+        <developer>https://github.com/hacesoft/nextcloud-stickynotes/blob/main/docs/DEVELOPMENT.md</developer>
+    </documentation>
     <category>organization</category>
+    <website>https://github.com/hacesoft/nextcloud-stickynotes</website>
+    <bugs>https://github.com/hacesoft/nextcloud-stickynotes/issues</bugs>
+    <repository>https://github.com/hacesoft/nextcloud-stickynotes</repository>
+    <screenshot>https://github.com/user-attachments/assets/71fd81a9-5828-4c0e-9160-fc8b3ec76c65</screenshot>
+    <screenshot>https://github.com/user-attachments/assets/e11025bc-9568-43ec-abec-431529528306</screenshot>
     <dependencies>
-        <nextcloud min-version="34" max-version="35"/>
+        <nextcloud min-version="34" max-version="34"/>
     </dependencies>
+    <background-jobs>
+        <job>OCA\StickyNotes\BackgroundJob\DueReminderJob</job>
+    </background-jobs>
     <navigations>
         <navigation>
             <name>Sticky Notes</name>

@@ -2,46 +2,34 @@
 
 [English](SETTINGS.md) | [Česky](SETTINGS_CZ.md) | [← Documentation](README.md)
 
-Application settings are opened with the **gear** button. Category and appearance management is kept separate from general application settings.
+Application settings are opened with the **gear** button. Category/style management remains separate from normal application settings.
 
 ## Widget settings
 
-The user can configure:
+The number of widget columns and rows can be configured. These values determine the maximum layout of Sticky Notes in the Dashboard widget.
 
-- widget columns,
-- widget rows.
+## Pagination and layout
 
-These values determine the maximum layout of sticky notes in the Dashboard widget.
+Users can configure notes per page and workspace width. Version 1.1.0 contains a full responsive pass for the main page, filters, pagination, settings, categories, and dialogs. On narrow phones the note board switches to a single column and controls are constrained to the viewport.
 
-## Pagination
-
-Sticky Notes supports configuring the number of notes per page, which is useful for larger collections.
-
-## Main application layout
-
-Version 1.0.0 is fully usable on desktop. The new-note editor is usable on mobile, but the main page and some settings/dialog views have known width and scrolling problems. Full mobile responsiveness for every screen is planned for version 1.1.0. Application settings include layout choices for wider workspace use or a more compact presentation.
+This responsive pass is part of 1.1.0 and should be practically verified on phone, tablet, and desktop before the final release.
 
 ## Notifications
 
-Sticky Notes supports notifications when tasks are assigned. Settings control whether assignment notifications are used.
+Notification preferences are per user. Each user can independently enable built-in Nextcloud notifications and optional ntfy delivery. ntfy supports a custom server URL, topic, optional access token, and a **Send test notification** action.
 
-## Note appearance
+Selectable events include direct assignment, group assignment, sharing, task completion/reopening, and deadline notifications at 24 hours, 1 hour, and due-now. See [Notifications](NOTIFICATIONS.md).
 
-Optional natural note tilt and shadows are supported. Categories can define their own colors, icons, and visual styles.
+## Sticky note appearance
 
-See [Categories and appearance](CATEGORIES.md).
+Optional natural tilt and shadows are available. Categories can define their own colors, icons and marker styles. See [Categories and appearance](CATEGORIES.md).
 
 ## Help
 
-Setting descriptions are intended to be available alongside the relevant controls so users can understand their effect without prior knowledge.
+**Show detailed help** reveals additional explanations next to settings.
 
+## About
 
-## Notifications roadmap
-
-Version 1.0.0 uses the built-in Nextcloud notification mechanism for currently supported events. A per-user notification model with event selection and optional ntfy delivery is planned for 1.1.0. See [Notifications](NOTIFICATIONS.md).
-
-## About section
-
-A dedicated **About** section is planned for 1.1.0. It will show at least the application name, version, author **hacesoft**, license, and a clickable project URL:
+The **About** section shows the application name, version, author **hacesoft**, license and a clickable project URL:
 
 `https://github.com/hacesoft/nextcloud-stickynotes`
