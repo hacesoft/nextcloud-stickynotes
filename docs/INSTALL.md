@@ -2,13 +2,13 @@
 
 [English](INSTALL.md) | [Česky](INSTALL_CZ.md) | [← Documentation](README.md)
 
-This page describes installation of Sticky Notes 1.0.0 from the source repository. The application supports **Nextcloud 34 and 35**.
+This page describes installation of Sticky Notes 1.0.0 from the source repository. The application supports **Nextcloud 34**.
 
 ## 1. Requirements
 
 For installation on a NAS you will need:
 
-- a working Nextcloud 34 or 35 installation,
+- a working Nextcloud 34 installation,
 - access to the NAS,
 - SSH/SFTP enabled,
 - an account with sufficient privileges to run the installation script,

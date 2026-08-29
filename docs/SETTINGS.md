@@ -19,7 +19,7 @@ Sticky Notes supports configuring the number of notes per page, which is useful 
 
 ## Main application layout
 
-The interface supports responsive desktop, tablet, and mobile layouts. Application settings include layout choices for wider workspace use or a more compact presentation.
+Version 1.0.0 is fully usable on desktop. The new-note editor is usable on mobile, but the main page and some settings/dialog views have known width and scrolling problems. Full mobile responsiveness for every screen is planned for version 1.1.0. Application settings include layout choices for wider workspace use or a more compact presentation.
 
 ## Notifications
 
@@ -34,3 +34,14 @@ See [Categories and appearance](CATEGORIES.md).
 ## Help
 
 Setting descriptions are intended to be available alongside the relevant controls so users can understand their effect without prior knowledge.
+
+
+## Notifications roadmap
+
+Version 1.0.0 uses the built-in Nextcloud notification mechanism for currently supported events. A per-user notification model with event selection and optional ntfy delivery is planned for 1.1.0. See [Notifications](NOTIFICATIONS.md).
+
+## About section
+
+A dedicated **About** section is planned for 1.1.0. It will show at least the application name, version, author **hacesoft**, license, and a clickable project URL:
+
+`https://github.com/hacesoft/nextcloud-stickynotes`

@@ -12,6 +12,11 @@ Tato dokumentace popisuje funkce vydání **Sticky Notes 1.0.0**.
 - [Sdílení, přiřazení a notifikace](SHARING_CZ.md) – uživatelé, skupiny a dokončování úkolů.
 - [Dashboard widget](DASHBOARD_CZ.md) – kompaktní zobrazení na Dashboardu.
 - [Nastavení aplikace](SETTINGS_CZ.md) – widget, stránkování, layout a vzhled.
+- [Notifikace](NOTIFICATIONS_CZ.md) – současné notifikace v 1.0.0 a plánovaný model Nextcloud + ntfy pro 1.1.0.
+
+## Plán další verze
+
+- [Roadmap 1.1.0](ROADMAP_CZ.md) – mobilní rozhraní, O aplikaci, ntfy a příprava repozitáře pro oficiální distribuci.
 
 ## Instalace a údržba
 

@@ -49,3 +49,16 @@ Development-only revision labels should not be shown in the public 1.0.0 release
 Keep Czech and English pages paired. Each documentation page should provide a direct language switch to its counterpart.
 
 The two existing GitHub-hosted screenshots used by the project should retain their current URLs so documentation does not create unnecessary duplicate assets.
+
+
+## Nextcloud compatibility policy
+
+The project targets the newest Nextcloud major version actively used and tested by the project maintainer. Backward compatibility with older major versions is intentionally not maintained. For version 1.0.0, the supported target is Nextcloud 34. A later major version is declared supported only after the project itself has moved to it and the app has been tested there.
+
+## Distribution layout planned for 1.1.0
+
+The Git repository may keep development material under `src/`, `docs/`, `release/`, and `old/`. Official distribution packages must contain a top-level `stickynotes/` application directory whose contents are the runtime tree expected by Nextcloud, without repository-only directories.
+
+A release build helper is planned for 1.1.0. It should read the version from `src/appinfo/info.xml`, validate required runtime directories, build a clean `stickynotes/` staging tree, and create distribution archives suitable for manual installation and later App Store signing/publishing.
+
+Signing keys and certificates must never be committed to the repository.

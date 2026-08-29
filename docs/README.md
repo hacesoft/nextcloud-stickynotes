@@ -13,6 +13,11 @@ This documentation describes the features of **Sticky Notes 1.0.0**.
 - [Dashboard widget](DASHBOARD.md) – compact Dashboard view.
 - [Application settings](SETTINGS.md) – widget, pagination, layout, and appearance.
 
+## Next release plan
+
+- [Roadmap 1.1.0](ROADMAP.md) – mobile UI, About section, ntfy integration, and repository preparation for official distribution.
+- [Notifications](NOTIFICATIONS.md) – current 1.0.0 behavior and the planned Nextcloud + ntfy notification model.
+
 ## Installation and maintenance
 
 - [Installation](INSTALL.md)

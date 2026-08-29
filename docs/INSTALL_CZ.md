@@ -2,13 +2,13 @@
 
 [Česky](INSTALL_CZ.md) | [English](INSTALL.md) | [← Dokumentace](README_CZ.md)
 
-Tato stránka popisuje instalaci Sticky Notes 1.0.0 ze zdrojového repozitáře. Aplikace podporuje **Nextcloud 34 a 35**.
+Tato stránka popisuje instalaci Sticky Notes 1.0.0 ze zdrojového repozitáře. Aplikace podporuje **Nextcloud 34**.
 
 ## 1. Co budete potřebovat
 
 Pro instalaci na NAS budete potřebovat:
 
-- funkční Nextcloud 34 nebo 35,
+- funkční Nextcloud 34,
 - přístup k NASu,
 - povolené SSH/SFTP,
 - účet s oprávněním potřebným pro spuštění instalačního skriptu,

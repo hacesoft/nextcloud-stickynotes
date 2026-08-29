@@ -22,7 +22,6 @@ Sticky Notes is a native Nextcloud application for quick notes, personal sticky 
 - system and personal categories with icons and custom styles,
 - optional natural note tilt and shadows,
 - Dashboard widget,
-- responsive desktop, tablet, and mobile layouts,
 - assignment notifications,
 - multiple UI languages.
 
@@ -40,7 +39,7 @@ It contains the user guide, editor, categories, sharing, Dashboard widget, setti
 
 ## Compatibility
 
-Sticky Notes 1.0.0 supports **Nextcloud 34 and 35**. Older Nextcloud releases are not supported.
+Sticky Notes 1.0.0 is developed and tested for **Nextcloud 34**. The project intentionally does not maintain backward compatibility with earlier Nextcloud major releases. Support for a later major release will be added only after the project moves to that release and the app is tested there.
 
 ## Quick links
 
@@ -53,6 +52,10 @@ Sticky Notes 1.0.0 supports **Nextcloud 34 and 35**. Older Nextcloud releases ar
 ## Data and privacy
 
 The application uses Nextcloud's local users, groups, database, and notification system. Normal operation does not require an external cloud service.
+
+## Privacy and external services
+
+Version 1.0.0 uses Nextcloud users, groups, database storage, and the built-in Nextcloud notification system. It does not require an external cloud service for normal operation. Optional ntfy integration is planned for version 1.1.0.
 
 ## License
 

@@ -22,7 +22,6 @@ Sticky Notes (Samolepicí lístečky) je nativní aplikace pro Nextcloud pro ryc
 - systémové i osobní kategorie s ikonami a vlastními styly,
 - volitelný přirozený náklon a stín lístečků,
 - Dashboard widget,
-- responzivní zobrazení pro desktop, tablet a mobil,
 - notifikace při přiřazení úkolů,
 - více jazykových mutací.
 
@@ -36,11 +35,11 @@ Widget zobrazuje lístečky přímo na Dashboardu Nextcloudu v kompaktní podob�
 
 Kompletní česká dokumentace: **[docs/README_CZ.md](docs/README_CZ.md)**
 
-Najdete v ní uživatelskou příručku, popis editoru, kategorií, sdílení, widgetu, nastavení, instalace a aktualizace.
+Najdete v ní uživatelskou příručku, popis editoru, kategorií, sdílení, widgetu, nastavení, instalace a aktualizace. Plán změn pro 1.1.0 je veden odděleně, aby nebyly plánované funkce zaměňovány za funkce vydání 1.0.0.
 
 ## Kompatibilita
 
-Sticky Notes 1.0.0 podporuje **Nextcloud 34 a 35**. Starší verze Nextcloudu nejsou podporovány.
+Sticky Notes 1.0.0 je vyvíjena a testována pro **Nextcloud 34**. Projekt cíleně neudržuje zpětnou kompatibilitu s dřívějšími hlavními verzemi Nextcloudu. Podpora další hlavní verze bude přidána až po přechodu projektu na tuto verzi a po praktickém otestování aplikace.
 
 ## Rychlé odkazy
 
@@ -49,10 +48,11 @@ Sticky Notes 1.0.0 podporuje **Nextcloud 34 a 35**. Starší verze Nextcloudu ne
 - [Uživatelská příručka](docs/USER_GUIDE_CZ.md)
 - [Nastavení](docs/SETTINGS_CZ.md)
 - [Dashboard widget](docs/DASHBOARD_CZ.md)
+- [Plán verze 1.1.0](docs/ROADMAP_CZ.md)
 
 ## Data a soukromí
 
-Aplikace používá lokální uživatele, skupiny, databázi a notifikační systém Nextcloudu. Pro běžný provoz nepotřebuje externí cloudovou službu.
+Aplikace ve verzi 1.0.0 používá lokální uživatele, skupiny, databázi a notifikační systém Nextcloudu. Pro běžný provoz nepotřebuje externí cloudovou službu. Volitelná integrace ntfy je plánována až pro verzi 1.1.0.
 
 ## Licence
 
