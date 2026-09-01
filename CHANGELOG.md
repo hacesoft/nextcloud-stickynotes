@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.2
+
+### Fixed
+- Opening **New sticky note** from the Dashboard widget now waits until notes, categories and settings are loaded, so categories are available exactly as when opening the editor from the main app.
+- The user/group assignment selector is now a floating popover above the note editor and no longer expands the modal or forces the whole editor to scroll.
+
+### Changed
+- Removed the per-note **Marker color** control from the editor. Visual styling remains controlled by categories and administrator/user style templates. The stored legacy color field is kept internally for backward compatibility with existing notes.
+- JavaScript and CSS assets were bumped to 1.1.2 to avoid stale browser/Nextcloud caches after the UI fixes.
+
 ## 1.1.1
 
 - Renamed JavaScript and CSS assets to version 1.1.1 so browsers and Nextcloud cannot reuse cached 1.1.0 files.

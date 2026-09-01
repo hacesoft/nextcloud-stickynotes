@@ -4,7 +4,7 @@
 
 <img width="1181" height="579" alt="Sticky Notes – hlavní obrazovka" src="https://github.com/user-attachments/assets/71fd81a9-5828-4c0e-9160-fc8b3ec76c65" />
 
-**Verze 1.1.0**
+**Verze 1.1.2**
 
 Sticky Notes (Samolepicí lístečky) je nativní aplikace pro Nextcloud pro rychlé poznámky, osobní lístečky a jednoduché rodinné či týmové úkoly. Běží přímo v Nextcloudu a nepotřebuje samostatný aplikační kontejner.
 
@@ -42,7 +42,7 @@ Najdete v ní uživatelskou příručku, popis editoru, kategorií, sdílení, w
 
 ## Kompatibilita
 
-Sticky Notes 1.1.0 je vyvíjena a testována pro **Nextcloud 34**. Projekt cíleně neudržuje zpětnou kompatibilitu s dřívějšími hlavními verzemi Nextcloudu. Podpora další hlavní verze bude přidána až po přechodu projektu na tuto verzi a po praktickém otestování aplikace.
+Sticky Notes 1.1.2 je vyvíjena a testována pro **Nextcloud 34**. Projekt cíleně neudržuje zpětnou kompatibilitu s dřívějšími hlavními verzemi Nextcloudu. Podpora další hlavní verze bude přidána až po přechodu projektu na tuto verzi a po praktickém otestování aplikace.
 
 ## Rychlé odkazy
 
