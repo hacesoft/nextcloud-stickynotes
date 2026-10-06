@@ -2,7 +2,7 @@
 
 [Česky](README_CZ.md) | [English](README.md)
 
-<img width="1181" height="579" alt="Sticky Notes – hlavní obrazovka" src="https://github.com/user-attachments/assets/71fd81a9-5828-4c0e-9160-fc8b3ec76c65" />
+<img width="1134" height="617" alt="image" src="https://github.com/user-attachments/assets/c9e34307-17b8-4a27-97c3-cbb349a57cfe" />
 
 **Verze 1.1.2**
 
