@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace OCA\StickyNotes\Controller;
+namespace OCA\HcStickyNotes\Controller;
 
-use OCA\StickyNotes\AppInfo\Application;
-use OCA\StickyNotes\Db\Category;
-use OCA\StickyNotes\Db\CategoryMapper;
+use OCA\HcStickyNotes\AppInfo\Application;
+use OCA\HcStickyNotes\Db\Category;
+use OCA\HcStickyNotes\Db\CategoryMapper;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
@@ -44,12 +44,16 @@ class CategoryController extends Controller {
         return in_array($mode, ['inherit','header','left','right','top','bottom','border','corner','badge','full'], true) ? $mode : 'inherit';
     }
 
+    private function validPaperType(string $paperType): string {
+        return in_array($paperType, ['plain','lined','grid','dotted'], true) ? $paperType : 'plain';
+    }
+
     private function styleKey(int $id): string {
         return 'category_style_' . $id;
     }
 
     private function categoryStyle(Category $category): array {
-        $fallback = ['markerMode'=>'inherit','background'=>'#fff59d','markerColor'=>$category->getColor()];
+        $fallback = ['markerMode'=>'inherit','background'=>'#fff59d','markerColor'=>$category->getColor(),'paperType'=>'plain'];
         $raw = $category->getIsSystem()
             ? $this->config->getAppValue(Application::APP_ID, $this->styleKey((int)$category->getId()), '')
             : $this->config->getUserValue($category->getOwnerUid() ?? $this->uid(), Application::APP_ID, $this->styleKey((int)$category->getId()), '');
@@ -58,11 +62,12 @@ class CategoryController extends Controller {
         return is_array($decoded) ? array_merge($fallback, $decoded) : $fallback;
     }
 
-    private function saveCategoryStyle(Category $category, string $markerMode, string $background, string $markerColor): void {
+    private function saveCategoryStyle(Category $category, string $markerMode, string $background, string $markerColor, string $paperType = 'plain'): void {
         $style = json_encode([
             'markerMode'=>$this->validMode($markerMode),
             'background'=>$this->validColor($background),
             'markerColor'=>$this->validColor($markerColor),
+            'paperType'=>$this->validPaperType($paperType),
         ]);
         if ($category->getIsSystem()) {
             $this->config->setAppValue(Application::APP_ID, $this->styleKey((int)$category->getId()), $style);
@@ -91,7 +96,7 @@ class CategoryController extends Controller {
     }
 
     #[NoAdminRequired]
-    public function create(string $name, string $color = '#4f86f7', string $icon = '', bool $isSystem = false, string $markerMode = 'inherit', string $background = '#fff59d', string $markerColor = '#4f86f7'): DataResponse {
+    public function create(string $name, string $color = '#4f86f7', string $icon = '', bool $isSystem = false, string $markerMode = 'inherit', string $background = '#fff59d', string $markerColor = '#4f86f7', string $paperType = 'plain'): DataResponse {
         $name = mb_substr(trim($name), 0, 100);
         if ($name === '') {
             return new DataResponse(['error' => 'Category name is required'], Http::STATUS_BAD_REQUEST);
@@ -110,14 +115,14 @@ class CategoryController extends Controller {
         $category->setUpdatedAt(time());
 
         $category = $this->mapper->insert($category);
-        $this->saveCategoryStyle($category, $markerMode, $background, $markerColor);
+        $this->saveCategoryStyle($category, $markerMode, $background, $markerColor, $paperType);
         $row = $category->jsonSerialize();
         $row['style'] = $this->categoryStyle($category);
         return new DataResponse($row, Http::STATUS_CREATED);
     }
 
     #[NoAdminRequired]
-    public function update(int $id, string $name, string $color, string $icon = '', string $markerMode = 'inherit', string $background = '#fff59d', string $markerColor = '#4f86f7'): DataResponse {
+    public function update(int $id, string $name, string $color, string $icon = '', string $markerMode = 'inherit', string $background = '#fff59d', string $markerColor = '#4f86f7', string $paperType = 'plain'): DataResponse {
         try {
             $category = $this->mapper->findOne($id);
         } catch (DoesNotExistException) {
@@ -140,7 +145,7 @@ class CategoryController extends Controller {
         $category->setUpdatedAt(time());
 
         $category = $this->mapper->update($category);
-        $this->saveCategoryStyle($category, $markerMode, $background, $markerColor);
+        $this->saveCategoryStyle($category, $markerMode, $background, $markerColor, $paperType);
         $row = $category->jsonSerialize();
         $row['style'] = $this->categoryStyle($category);
         return new DataResponse($row);

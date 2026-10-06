@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace OCA\StickyNotes\AppInfo;
+namespace OCA\HcStickyNotes\AppInfo;
 
-use OCA\StickyNotes\Dashboard\StickyNotesWidget;
-use OCA\StickyNotes\Notification\Notifier;
+use OCA\HcStickyNotes\Dashboard\StickyNotesWidget;
+use OCA\HcStickyNotes\Notification\Notifier;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 
 class Application extends App implements IBootstrap {
-    public const APP_ID = 'stickynotes';
-    public const VERSION = '1.1.2';
+    public const APP_ID = 'hc_stickynotes';
+    public const VERSION = '2.0.11';
 
     public function __construct() {
         parent::__construct(self::APP_ID);

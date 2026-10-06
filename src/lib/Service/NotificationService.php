@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace OCA\StickyNotes\Service;
+namespace OCA\HcStickyNotes\Service;
 
-use OCA\StickyNotes\AppInfo\Application;
-use OCA\StickyNotes\Db\Note;
+use OCA\HcStickyNotes\AppInfo\Application;
+use OCA\HcStickyNotes\Db\Note;
+use OCA\HcStickyNotes\Db\ShareMapper;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IGroupManager;
@@ -32,6 +33,7 @@ class NotificationService {
         private ICrypto $crypto,
         private IGroupManager $groupManager,
         private LoggerInterface $logger,
+        private ShareMapper $shareMapper,
     ) {}
 
     public function defaultEvents(): array {
@@ -92,7 +94,10 @@ class NotificationService {
     }
 
     public function recipientsForAssignment(Note $note): array {
-        $target = $note->getAssignedUid();
+        return $this->recipientsForTarget($note->getAssignedUid());
+    }
+
+    public function recipientsForTarget(?string $target): array {
         if ($target === null || $target === '') return [];
         if (str_starts_with($target, 'group:')) {
             $group = $this->groupManager->get(substr($target, 6));
@@ -104,6 +109,10 @@ class NotificationService {
 
     public function recipientsForDue(Note $note): array {
         $recipients = $this->recipientsForAssignment($note);
+        foreach ($this->shareMapper->assignmentTargets((int)$note->getId()) as $target) {
+            array_push($recipients, ...$this->recipientsForTarget($target));
+        }
+        $recipients = array_values(array_unique($recipients));
         return $recipients === [] ? [$note->getOwnerUid()] : $recipients;
     }
 
@@ -146,7 +155,7 @@ class NotificationService {
     public function testNtfy(string $uid): void {
         $prefs = $this->getPreferences($uid, true);
         if ($prefs['ntfyTopic'] === '') throw new \RuntimeException('ntfy topic is empty');
-        $this->sendNtfy($prefs, 'Sticky Notes', 'Test notification from Sticky Notes.', ['white_check_mark'], 3, $this->url->linkToRouteAbsolute('stickynotes.page.index'));
+        $this->sendNtfy($prefs, 'Sticky Notes', 'Test notification from Sticky Notes.', ['white_check_mark'], 3, $this->url->linkToRouteAbsolute('hc_stickynotes.page.index'));
     }
 
     public function markDueSent(string $uid, int $noteId, string $event, int $dueAt): void {
@@ -166,7 +175,7 @@ class NotificationService {
     }
 
     private function noteLink(Note $note): string {
-        return $this->url->linkToRouteAbsolute('stickynotes.page.index') . '?note=' . rawurlencode((string)$note->getId());
+        return $this->url->linkToRouteAbsolute('hc_stickynotes.page.index') . '?note=' . rawurlencode((string)$note->getId());
     }
 
     private function message(Note $note, string $event, string $actorUid): array {

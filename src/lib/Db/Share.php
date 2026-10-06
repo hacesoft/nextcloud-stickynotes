@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace OCA\StickyNotes\Db;
+namespace OCA\HcStickyNotes\Db;
 
 use OCP\AppFramework\Db\Entity;
 
 class Share extends Entity implements \JsonSerializable {
     protected int $noteId = 0;
-    protected string $shareType = 'user';
+    // Entity only inserts fields changed through a setter. An initial 'user'
+    // would make setShareType('user') a no-op and omit the required DB column.
+    protected string $shareType = '';
     protected string $shareWith = '';
     protected string $permission = 'view';
     protected int $createdAt = 0;

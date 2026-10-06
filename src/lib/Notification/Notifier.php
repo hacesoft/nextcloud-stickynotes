@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace OCA\StickyNotes\Notification;
+namespace OCA\HcStickyNotes\Notification;
 
-use OCA\StickyNotes\AppInfo\Application;
+use OCA\HcStickyNotes\AppInfo\Application;
 use OCP\IURLGenerator;
 use OCP\L10N\IFactory;
 use OCP\Notification\INotification;
@@ -50,7 +50,7 @@ class Notifier implements INotifier {
             default:
                 throw new UnknownNotificationException();
         }
-        $noteLink = $this->url->linkToRouteAbsolute('stickynotes.page.index') . '?note=' . rawurlencode($notification->getObjectId());
+        $noteLink = $this->url->linkToRouteAbsolute('hc_stickynotes.page.index') . '?note=' . rawurlencode($notification->getObjectId());
         $notification->setLink($noteLink);
         foreach ($notification->getActions() as $action) {
             if ($action->getLabel() === 'open_note') {

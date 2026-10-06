@@ -2,6 +2,7 @@
 return [
     'routes' => [
         ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
+        ['name' => 'page#shell', 'url' => '/shell', 'verb' => 'GET'],
         ['name' => 'note#list', 'url' => '/api/notes', 'verb' => 'GET'],
         ['name' => 'editor#list', 'url' => '/api/editor', 'verb' => 'GET'],
         ['name' => 'editor#save', 'url' => '/api/notes/{id}/editor', 'verb' => 'PUT'],

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
-    <id>stickynotes</id>
+    <id>hc_stickynotes</id>
     <name>Sticky Notes</name>
-    <namespace>StickyNotes</namespace>
+    <namespace>HcStickyNotes</namespace>
     <summary>Simple sticky notes, shared notes and assigned tasks for Nextcloud.</summary>
     <description><![CDATA[
 Sticky Notes adds quick notes and lightweight tasks directly to Nextcloud.
@@ -11,13 +11,13 @@ Create colored sticky notes, share them with users or groups, assign tasks,
 set due dates, receive configurable notifications and keep important notes
 visible on the Dashboard.
     ]]></description>
-    <version>1.1.2</version>
+    <version>2.0.11</version>
     <licence>AGPL-3.0-or-later</licence>
     <author homepage="https://github.com/hacesoft">hacesoft</author>
     <documentation>
-        <user>https://github.com/hacesoft/nextcloud-stickynotes/blob/main/docs/USER_GUIDE.md</user>
-        <admin>https://github.com/hacesoft/nextcloud-stickynotes/blob/main/docs/INSTALL.md</admin>
-        <developer>https://github.com/hacesoft/nextcloud-stickynotes/blob/main/docs/DEVELOPMENT.md</developer>
+        <user>https://github.com/hacesoft/nextcloud-stickynotes/blob/main/docs/en/USER_GUIDE.md</user>
+        <admin>https://github.com/hacesoft/nextcloud-stickynotes/blob/main/docs/en/INSTALL.md</admin>
+        <developer>https://github.com/hacesoft/nextcloud-stickynotes/blob/main/docs/en/DEVELOPMENT.md</developer>
     </documentation>
     <category>organization</category>
     <website>https://github.com/hacesoft/nextcloud-stickynotes</website>
@@ -26,16 +26,17 @@ visible on the Dashboard.
     <screenshot>https://github.com/user-attachments/assets/71fd81a9-5828-4c0e-9160-fc8b3ec76c65</screenshot>
     <screenshot>https://github.com/user-attachments/assets/e11025bc-9568-43ec-abec-431529528306</screenshot>
     <dependencies>
-        <nextcloud min-version="34" max-version="34"/>
+        <nextcloud min-version="35" max-version="35"/>
+        <php min-version="8.3"/>
     </dependencies>
     <background-jobs>
-        <job>OCA\StickyNotes\BackgroundJob\DueReminderJob</job>
+        <job>OCA\HcStickyNotes\BackgroundJob\DueReminderJob</job>
     </background-jobs>
     <navigations>
         <navigation>
             <name>Sticky Notes</name>
-            <namespace>StickyNotes</namespace>
-            <route>stickynotes.page.index</route>
+            <namespace>HcStickyNotes</namespace>
+            <route>hc_stickynotes.page.index</route>
             <order>30</order>
             <icon>app.svg</icon>
         </navigation>

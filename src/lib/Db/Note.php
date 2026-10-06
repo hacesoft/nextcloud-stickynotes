@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\StickyNotes\Db;
+namespace OCA\HcStickyNotes\Db;
 
 use OCP\AppFramework\Db\Entity;
 

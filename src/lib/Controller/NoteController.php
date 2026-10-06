@@ -2,24 +2,25 @@
 
 declare(strict_types=1);
 
-namespace OCA\StickyNotes\Controller;
+namespace OCA\HcStickyNotes\Controller;
 
-use OCA\StickyNotes\AppInfo\Application;
-use OCA\StickyNotes\Db\Note;
-use OCA\StickyNotes\Db\NoteMapper;
-use OCA\StickyNotes\Db\Share;
-use OCA\StickyNotes\Db\ShareMapper;
+use OCA\HcStickyNotes\AppInfo\Application;
+use OCA\HcStickyNotes\Db\Note;
+use OCA\HcStickyNotes\Db\NoteMapper;
+use OCA\HcStickyNotes\Db\Share;
+use OCA\HcStickyNotes\Db\ShareMapper;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http;
+use OCP\IDBConnection;
 use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IUserSession;
 use OCP\IUserManager;
 use Psr\Log\LoggerInterface;
-use OCA\StickyNotes\Service\NotificationService;
+use OCA\HcStickyNotes\Service\NotificationService;
 
 class NoteController extends Controller {
     public function __construct(
@@ -31,10 +32,11 @@ class NoteController extends Controller {
         private NotificationService $notifications,
         private IUserManager $userManager,
         private LoggerInterface $logger,
+        private IDBConnection $db,
     ) { parent::__construct(Application::APP_ID, $request); }
 
     private function uid(): string { return $this->userSession->getUser()?->getUID() ?? ''; }
-    private function groups(): array { return array_keys($this->groupManager->getUserGroupIds($this->userSession->getUser())); }
+    private function groups(): array { return $this->groupManager->getUserGroupIds($this->userSession->getUser()); }
 
 
     private function normalizeAssignment(?string $assignedUid): ?string {
@@ -49,13 +51,33 @@ class NoteController extends Controller {
         return $this->userManager->userExists($assignedUid) ? $assignedUid : null;
     }
 
+    private function normalizeAssignments(?array $targets, ?string $legacy): array {
+        $targets ??= $legacy === null ? [] : [$legacy];
+        if (count($targets) > 32) throw new \InvalidArgumentException('Too many assignees');
+        $clean = [];
+        foreach ($targets as $target) {
+            if (!is_string($target)) throw new \InvalidArgumentException('Invalid assignee');
+            $value = $this->normalizeAssignment($target);
+            if ($value === null && trim($target) !== '') throw new \InvalidArgumentException('Unknown user or group');
+            if ($value !== null) $clean[$value] = $value;
+        }
+        return array_values($clean);
+    }
+
+    private function noteAssignments(Note $note): array {
+        return array_values(array_unique(array_filter(array_merge(
+            [$note->getAssignedUid()],
+            $this->shareMapper->assignmentTargets((int)$note->getId()),
+        ))));
+    }
+
     private function safeNotifyAssignment(Note $note, ?string $target): void {
         if ($target === null) return;
         try {
             $event = str_starts_with($target, 'group:')
                 ? NotificationService::EVENT_ASSIGNED_GROUP
                 : NotificationService::EVENT_ASSIGNED_USER;
-            foreach ($this->notifications->recipientsForAssignment($note) as $recipient) {
+            foreach ($this->notifications->recipientsForTarget($target) as $recipient) {
                 $this->notifications->send($note, $recipient, $event, $this->uid());
             }
         } catch (\Throwable $e) {
@@ -70,16 +92,21 @@ class NoteController extends Controller {
     public function list(): DataResponse {
         $notes = $this->noteMapper->findAllForUser($this->uid(), $this->groupManager->getUserGroupIds($this->userSession->getUser()));
         $result = [];
+        $userGroups = $this->groups();
         foreach ($notes as $note) {
             $row = $note->jsonSerialize();
-            $row['shares'] = $this->shareMapper->findByNote((int)$note->getId());
+            $row['canEdit'] = $this->noteMapper->canEdit($note, $this->uid(), $userGroups);
+            $row['assignedUids'] = $this->noteAssignments($note);
+            $row['assignedToMe'] = in_array($this->uid(), $row['assignedUids'], true)
+                || (bool)array_intersect(array_map(static fn(string $gid): string => 'group:' . $gid, $userGroups), $row['assignedUids']);
+            $row['shares'] = array_values(array_filter($this->shareMapper->findByNote((int)$note->getId()), static fn(Share $share): bool => $share->getPermission() !== 'assign'));
             $result[] = $row;
         }
         return new DataResponse($result);
     }
 
     #[NoAdminRequired]
-    public function create(string $title = '', string $content = '', string $color = '#4f86f7', ?int $categoryId = null, string $type = 'note', string $priority = 'normal', ?string $assignedUid = null, ?int $dueAt = null): DataResponse {
+    public function create(string $title = '', string $content = '', string $color = '#4f86f7', ?int $categoryId = null, string $type = 'note', string $priority = 'normal', ?string $assignedUid = null, ?int $dueAt = null, ?array $assignedUids = null): DataResponse {
         $now = time();
         $note = new Note();
         $note->setOwnerUid($this->uid());
@@ -89,41 +116,59 @@ class NoteController extends Controller {
         $note->setCategoryId($categoryId ?: null);
         $note->setType($type === 'task' ? 'task' : 'note');
         $note->setPriority(in_array($priority, ['normal','important'], true) ? $priority : 'normal');
-        $assignedUid = $this->normalizeAssignment($assignedUid);
-        $note->setAssignedUid($assignedUid);
+        $targets = $this->normalizeAssignments($assignedUids, $assignedUid);
+        $note->setAssignedUid($targets[0] ?? null);
         $note->setDueAt($dueAt);
         $note->setCreatedAt($now);
         $note->setUpdatedAt($now);
-        $saved = $this->noteMapper->insert($note);
-        $this->safeNotifyAssignment($saved, $assignedUid);
+        $this->db->beginTransaction();
+        try {
+            $saved = $this->noteMapper->insert($note);
+            $this->shareMapper->replaceExtraAssignments((int)$saved->getId(), array_slice($targets, 1));
+            $this->db->commit();
+        } catch (\Throwable $e) {
+            $this->db->rollBack();
+            throw $e;
+        }
+        foreach ($targets as $target) $this->safeNotifyAssignment($saved, $target);
         return new DataResponse($saved, Http::STATUS_CREATED);
     }
 
     #[NoAdminRequired]
-    public function update(int $id, ?string $title = null, ?string $content = null, ?string $color = null, ?int $categoryId = null, ?string $type = null, ?string $priority = null, ?string $assignedUid = null, ?int $dueAt = null): DataResponse {
-        try { $note = $this->noteMapper->findForUser($id, $this->uid()); } catch (DoesNotExistException) { return new DataResponse(['error'=>'Not found'], Http::STATUS_NOT_FOUND); }
+    public function update(int $id, ?string $title = null, ?string $content = null, ?string $color = null, ?int $categoryId = null, ?string $type = null, ?string $priority = null, ?string $assignedUid = null, ?int $dueAt = null, ?array $assignedUids = null): DataResponse {
+        try { $note = $this->noteMapper->findForUser($id, $this->uid(), $this->groups()); } catch (DoesNotExistException) { return new DataResponse(['error'=>'Not found'], Http::STATUS_NOT_FOUND); }
+        if (!$this->noteMapper->canEdit($note, $this->uid(), $this->groups())) return new DataResponse(['error'=>'Edit permission required'], Http::STATUS_FORBIDDEN);
         if ($title !== null) $note->setTitle(mb_substr(trim($title), 0, 255));
         if ($content !== null) $note->setContent($content);
         if ($color !== null && preg_match('/^#[0-9a-fA-F]{6}$/',$color)) $note->setColor(strtolower($color));
         if ($categoryId !== null) $note->setCategoryId($categoryId ?: null);
         if ($type !== null) $note->setType($type === 'task' ? 'task' : 'note');
         if ($priority !== null && in_array($priority, ['normal','important'], true)) $note->setPriority($priority);
+        $newAssignments = [];
         if ($note->getOwnerUid() === $this->uid()) {
-            $oldAssigned = $note->getAssignedUid();
-            $assignedUid = $this->normalizeAssignment($assignedUid);
-            $note->setAssignedUid($assignedUid);
+            $oldAssignments = $this->noteAssignments($note);
+            $targets = $this->normalizeAssignments($assignedUids, $assignedUid);
+            $note->setAssignedUid($targets[0] ?? null);
             $note->setDueAt($dueAt);
-            if ($assignedUid !== $oldAssigned) {
-                $this->safeNotifyAssignment($note, $assignedUid);
-            }
+            $newAssignments = array_diff($targets, $oldAssignments);
         }
         $note->setUpdatedAt(time());
-        return new DataResponse($this->noteMapper->update($note));
+        $this->db->beginTransaction();
+        try {
+            $saved = $this->noteMapper->update($note);
+            if (isset($targets)) $this->shareMapper->replaceExtraAssignments($id, array_slice($targets, 1));
+            $this->db->commit();
+        } catch (\Throwable $e) {
+            $this->db->rollBack();
+            throw $e;
+        }
+        foreach ($newAssignments as $target) $this->safeNotifyAssignment($saved, $target);
+        return new DataResponse($saved);
     }
 
     #[NoAdminRequired]
     public function delete(int $id): DataResponse {
-        try { $note = $this->noteMapper->findForUser($id, $this->uid()); } catch (DoesNotExistException) { return new DataResponse(['error'=>'Not found'], Http::STATUS_NOT_FOUND); }
+        try { $note = $this->noteMapper->findForUser($id, $this->uid(), $this->groups()); } catch (DoesNotExistException) { return new DataResponse(['error'=>'Not found'], Http::STATUS_NOT_FOUND); }
         if ($note->getOwnerUid() !== $this->uid()) return new DataResponse(['error'=>'Only owner can delete'], Http::STATUS_FORBIDDEN);
         foreach ($this->shareMapper->findByNote($id) as $share) $this->shareMapper->delete($share);
         $this->noteMapper->delete($note);
@@ -132,7 +177,8 @@ class NoteController extends Controller {
 
     #[NoAdminRequired]
     public function complete(int $id): DataResponse {
-        try { $note = $this->noteMapper->findForUser($id, $this->uid()); } catch (DoesNotExistException) { return new DataResponse(['error'=>'Not found'], Http::STATUS_NOT_FOUND); }
+        try { $note = $this->noteMapper->findForUser($id, $this->uid(), $this->groups()); } catch (DoesNotExistException) { return new DataResponse(['error'=>'Not found'], Http::STATUS_NOT_FOUND); }
+        if (!$this->noteMapper->canEdit($note, $this->uid(), $this->groups())) return new DataResponse(['error'=>'Edit permission required'], Http::STATUS_FORBIDDEN);
         $wasCompleted = $note->getCompletedAt() !== null;
         $note->setCompletedAt($wasCompleted ? null : time());
         $note->setUpdatedAt(time());
@@ -150,7 +196,7 @@ class NoteController extends Controller {
 
     #[NoAdminRequired]
     public function share(int $id, string $shareType, string $shareWith, string $permission = 'view'): DataResponse {
-        try { $note = $this->noteMapper->findForUser($id, $this->uid()); } catch (DoesNotExistException) { return new DataResponse(['error'=>'Not found'], Http::STATUS_NOT_FOUND); }
+        try { $note = $this->noteMapper->findForUser($id, $this->uid(), $this->groups()); } catch (DoesNotExistException) { return new DataResponse(['error'=>'Not found'], Http::STATUS_NOT_FOUND); }
         if ($note->getOwnerUid() !== $this->uid()) return new DataResponse(['error'=>'Only owner can share'], Http::STATUS_FORBIDDEN);
         if (!in_array($shareType, ['user','group'], true)) return new DataResponse(['error'=>'Invalid share type'], Http::STATUS_BAD_REQUEST);
         $share = new Share();
@@ -163,7 +209,7 @@ class NoteController extends Controller {
 
     #[NoAdminRequired]
     public function unshare(int $id, int $shareId): DataResponse {
-        try { $note = $this->noteMapper->findForUser($id, $this->uid()); $share = $this->shareMapper->findOne($shareId, $id); } catch (DoesNotExistException) { return new DataResponse(['error'=>'Not found'], Http::STATUS_NOT_FOUND); }
+        try { $note = $this->noteMapper->findForUser($id, $this->uid(), $this->groups()); $share = $this->shareMapper->findOne($shareId, $id); } catch (DoesNotExistException) { return new DataResponse(['error'=>'Not found'], Http::STATUS_NOT_FOUND); }
         if ($note->getOwnerUid() !== $this->uid()) return new DataResponse(['error'=>'Only owner can unshare'], Http::STATUS_FORBIDDEN);
         $this->shareMapper->delete($share); return new DataResponse(['ok'=>true]);
     }

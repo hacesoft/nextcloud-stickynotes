@@ -1,1 +1,26 @@
-OC.L10N.register("stickynotes",{"Application settings": "Definições da aplicação", "Sticky note styles and categories": "Estilos e categorias de notas", "Widget settings": "Definições do widget", "Application layout": "Layout da aplicação", "Page width": "Largura da página", "Full width": "Largura total", "Centered": "Centrado"},"nplurals=2; plural=(n != 1);");
+OC.L10N.register(
+    "hc_stickynotes",
+    {
+    "Application layout": "Layout da aplicação",
+    "Application settings": "Definições da aplicação",
+    "Centered": "Centrado",
+    "Confirm": "Confirmar",
+    "Confirm action": "Confirmar ação",
+    "Delete category": "Eliminar categoria",
+    "Delete sticky note": "Eliminar nota",
+    "Download Shared App Core": "Transferir Shared App Core",
+    "Full width": "Largura total",
+    "Installed version:": "Versão instalada:",
+    "Page width": "Largura da página",
+    "Required version:": "Versão necessária:",
+    "Retry": "Tentar novamente",
+    "Shared App Core contract is incompatible.": "O contrato do Shared App Core é incompatível.",
+    "Shared App Core could not start.": "Não foi possível iniciar o Shared App Core.",
+    "Shared App Core is missing, disabled, or not ready.": "O Shared App Core está ausente, desativado ou ainda não está pronto.",
+    "Shared App Core is too old.": "O Shared App Core é demasiado antigo.",
+    "Sticky note styles and categories": "Estilos e categorias de notas",
+    "Widget settings": "Definições do widget",
+    "Starting application…": "A iniciar a aplicação…"
+},
+    "nplurals=2; plural=(n != 1);"
+);

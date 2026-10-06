@@ -1,63 +1,45 @@
-# Sticky Notes pro Nextcloud
+[🇨🇿 **Česky**](README_CZ.md) | [🇬🇧 English](README.md)
 
-[Česky](README_CZ.md) | [English](README.md)
+# Žluté lístečky 2.0.11
+
+Aplikace pro Nextcloud z dílny Hacesoft pro osobní a sdílené poznámky, úkoly s termíny, kategorie, widget Dashboardu a volitelná oznámení. Poznámky lze sdílet s uživateli nebo skupinami s právem prohlížení či úprav.
 
 <img width="1134" height="617" alt="image" src="https://github.com/user-attachments/assets/c9e34307-17b8-4a27-97c3-cbb349a57cfe" />
 
-**Verze 1.1.2**
+## Požadavky
 
-Sticky Notes (Samolepicí lístečky) je nativní aplikace pro Nextcloud pro rychlé poznámky, osobní lístečky a jednoduché rodinné či týmové úkoly. Běží přímo v Nextcloudu a nepotřebuje samostatný aplikační kontejner.
+- Nextcloud 35 a PHP 8.3 nebo novější.
+- **Nainstalované a zapnuté [Hacesoft Core](https://github.com/hacesoft/core), verze 0.18.0-dev.2 nebo novější.** Bez Core aplikace nefunguje.
 
-## Hlavní funkce
+Core je samostatná aplikace a není přibalené k Lístečkům. Nejprve jej nainstalujte podle návodu v [repozitáři Core](https://github.com/hacesoft/core).
 
-- barevné samolepicí lístečky,
-- poznámky a úkoly s prioritou a termínem,
-- přiřazení jednotlivému uživateli nebo skupině Nextcloudu,
-- sdílení s uživateli a skupinami,
-- označení úkolu jako hotového,
-- připnutí a ruční řazení lístečků,
-- vyhledávání, filtrování, třídění, statistika a stránkování,
-- rich-text editor s nadpisy, formátováním, seznamy, odkazy a tabulkami,
-- automatický kontrast textu podle barvy lístečku,
-- systémové i osobní kategorie s ikonami a vlastními styly,
-- volitelný přirozený náklon a stín lístečků,
-- Dashboard widget,
-- responzivní rozhraní pro hlavní stránku, dialogy, nastavení a správu kategorií,
-- interní Nextcloud notifikace a volitelné ntfy notifikace s nastavením pro každého uživatele,
-- upozornění při přiřazení, sdílení, dokončení/znovuotevření úkolu a blížícím se termínu,
-- sekce O aplikaci s verzí, autorem, odkazem na projekt a licencí,
-- více jazykových mutací.
+## Instalace a aktualizace
 
-## Dashboard widget
+Stáhněte a rozbalte kompletní zdrojový balíček. V kořeni rozbaleného projektu spusťte:
 
-Widget zobrazuje lístečky přímo na Dashboardu Nextcloudu v kompaktní podobě.
+```sh
+sudo sh install.sh
+```
 
-<img width="351" height="569" alt="Sticky Notes – Dashboard widget" src="https://github.com/user-attachments/assets/e11025bc-9568-43ec-abec-431529528306" />
+Instalační skript podporuje zdokumentované nasazení Synology/Docker. Požadavky a postup aktualizace najdete v [instalačním návodu](docs/cz/INSTALL_CZ.md). Existující poznámky se při aktualizaci zachovávají v databázi. Před aktualizací zálohujte databázi a soubory aplikace.
+
+Před odinstalací si přečtěte část o odstranění v instalačním návodu. Z kořene projektu použijte `sudo sh uninstall.sh`; před odstraněním uložených dat zkontrolujte volby skriptu.
 
 ## Dokumentace
 
-Kompletní česká dokumentace: **[docs/README_CZ.md](docs/README_CZ.md)**
+- [Přehled dokumentace](docs/cz/README_CZ.md)
+- [Uživatelská příručka](docs/cz/USER_GUIDE_CZ.md)
+- [Sdílení a oprávnění](docs/cz/SHARING_CZ.md)
+- [Editor](docs/cz/EDITOR_CZ.md)
+- [Widget Dashboardu](docs/cz/DASHBOARD_CZ.md)
+- [Nastavení](docs/cz/SETTINGS_CZ.md)
+- [Oznámení](docs/cz/NOTIFICATIONS_CZ.md)
+- [Mobilní rozložení](docs/cz/MOBILNI_LAYOUT.md)
 
-Najdete v ní uživatelskou příručku, popis editoru, kategorií, sdílení, widgetu, nastavení, instalace a aktualizace. Dokument ROADMAP_CZ.md zachovává návrh a cíle, ze kterých verze 1.1.0 vznikla.
+## Struktura zdrojů
 
-## Kompatibilita
+`src/` obsahuje aplikaci, `scripts/` instalační pomocníky a `docs/cz/` a `docs/en/` českou a anglickou dokumentaci. Kompletní zdrojový balíček obsahuje `install.sh` i `uninstall.sh`. `build-release.sh` sestavuje runtime ZIP/tarball z `src/`; generované výstupy patří do `release/`.
 
-Sticky Notes 1.1.2 je vyvíjena a testována pro **Nextcloud 34**. Projekt cíleně neudržuje zpětnou kompatibilitu s dřívějšími hlavními verzemi Nextcloudu. Podpora další hlavní verze bude přidána až po přechodu projektu na tuto verzi a po praktickém otestování aplikace.
+Podklady pro vývojáře: [vývoj](docs/cz/DEVELOPMENT_CZ.md), [kontrola Nextcloud 35](docs/cz/NC35_REVIEW_CZ.md) a [přehled změn](docs/cz/CHANGELOG_CZ.md).
 
-## Rychlé odkazy
-
-- [Instalace](docs/INSTALL_CZ.md)
-- [Aktualizace](docs/UPDATE_CZ.md)
-- [Uživatelská příručka](docs/USER_GUIDE_CZ.md)
-- [Nastavení](docs/SETTINGS_CZ.md)
-- [Dashboard widget](docs/DASHBOARD_CZ.md)
-- [Notifikace](docs/NOTIFICATIONS_CZ.md)
-- [Návrh a realizace verze 1.1.0](docs/ROADMAP_CZ.md)
-
-## Data a soukromí
-
-Aplikace ve verzi 1.1.0 používá lokální uživatele, skupiny, databázi a notifikační systém Nextcloudu. Pro běžný provoz nepotřebuje externí cloudovou službu. Verze 1.1.0 přidává vedle notifikací Nextcloudu také volitelnou integraci ntfy nastavitelnou pro každého uživatele.
-
-## Licence
-
-AGPL-3.0-or-later
+Licence: [AGPL-3.0-or-later](LICENSE).

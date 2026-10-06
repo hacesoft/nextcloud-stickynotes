@@ -1,67 +1,45 @@
-# Sticky Notes for Nextcloud
+[🇨🇿 Česky](README_CZ.md) | [🇬🇧 **English**](README.md)
 
-[English](README.md) | [Česky](README_CZ.md)
+# Sticky Notes 2.0.11
+
+A Nextcloud application developed by Hacesoft for personal and shared notes, tasks with due dates, categories, a Dashboard widget and optional notifications. Share notes with users or groups using view/edit permissions.
 
 <img width="1134" height="617" alt="image" src="https://github.com/user-attachments/assets/c9e34307-17b8-4a27-97c3-cbb349a57cfe" />
 
-**Version 1.1.2**
+## Requirements
 
-Sticky Notes is a native Nextcloud application for quick notes, personal sticky notes, and lightweight family or team tasks. It runs directly inside Nextcloud and does not require a separate application container.
+- Nextcloud 35 and PHP 8.3 or newer.
+- **[Hacesoft Core](https://github.com/hacesoft/core), version 0.18.0-dev.2 or newer, installed and enabled.** Sticky Notes requires Core to function.
 
-## Main features
+Core is a separate application; it is not bundled with Sticky Notes. Install it first using the instructions in the [Core repository](https://github.com/hacesoft/core).
 
-- colored sticky notes,
-- notes and tasks with priority and due dates,
-- assignment to individual Nextcloud users or groups,
-- user and group sharing,
-- completed task state,
-- pinning and manual note ordering,
-- search, filters, sorting, statistics, and pagination,
-- rich-text editor with headings, formatting, lists, links, and tables,
-- automatic text contrast based on the note background,
-- system and personal categories with icons and custom styles,
-- optional natural note tilt and shadows,
-- Dashboard widget,
-- responsive layouts for the main page, dialogs, settings, and category management,
-- built-in Nextcloud notifications plus optional per-user ntfy notifications,
-- assignment, sharing, completion/reopening and due-time notification events,
-- About section with version, author, project link and license,
-- multiple UI languages.
+## Installation and updates
 
-## Dashboard widget
+Download and extract the complete source package. From the extracted project root, run:
 
-The widget displays Sticky Notes directly on the Nextcloud Dashboard in a compact layout.
+```sh
+sudo sh install.sh
+```
 
-<img width="351" height="569" alt="Sticky Notes – Dashboard widget" src="https://github.com/user-attachments/assets/e11025bc-9568-43ec-abec-431529528306" />
+The installer supports the documented Synology/Docker deployment. Read the [installation guide](docs/en/INSTALL.md) for prerequisites and upgrade instructions. Existing notes remain in the database during upgrades. Before updating, back up the database and application files.
+
+To uninstall, read the removal section in the installation guide and use `sudo sh uninstall.sh` from the project root. Review the script's options before removing stored data.
 
 ## Documentation
 
-Complete English documentation: **[docs/README.md](docs/README.md)**
+- [Documentation index](docs/en/README.md)
+- [User guide](docs/en/USER_GUIDE.md)
+- [Sharing and permissions](docs/en/SHARING.md)
+- [Editor](docs/en/EDITOR.md)
+- [Dashboard widget](docs/en/DASHBOARD.md)
+- [Settings](docs/en/SETTINGS.md)
+- [Notifications](docs/en/NOTIFICATIONS.md)
+- [Mobile layout](docs/en/MOBILE_LAYOUT.md)
 
-It contains the user guide, editor, categories, sharing, Dashboard widget, settings, installation, and update instructions.
+## Source layout
 
-## Compatibility
+`src/` contains the application runtime, `scripts/` installation helpers and `docs/cz/` and `docs/en/` Czech and English documentation. `install.sh` and `uninstall.sh` are included in the full source package. `build-release.sh` builds runtime ZIP/tarball artifacts from `src/`; generated output belongs in `release/`.
 
-Sticky Notes 1.1.2 is developed and tested for **Nextcloud 34**. The project intentionally does not maintain backward compatibility with earlier Nextcloud major releases. Support for a later major release will be added only after the project moves to that release and the app is tested there.
+Maintainer information: [development](docs/en/DEVELOPMENT.md), [Nextcloud 35 review](docs/en/NC35_REVIEW_EN.md) and [changelog](docs/en/CHANGELOG.md).
 
-## Quick links
-
-- [Installation](docs/INSTALL.md)
-- [Updating](docs/UPDATE.md)
-- [User guide](docs/USER_GUIDE.md)
-- [Settings](docs/SETTINGS.md)
-- [Dashboard widget](docs/DASHBOARD.md)
-- [Notifications](docs/NOTIFICATIONS.md)
-- [Version 1.1.0 design and implementation](docs/ROADMAP.md)
-
-## Data and privacy
-
-The application uses Nextcloud's local users, groups, database, and notification system. Normal operation does not require an external cloud service.
-
-## Privacy and external services
-
-Version 1.1.2 uses Nextcloud users, groups, database storage, and the built-in Nextcloud notification system. It does not require an external cloud service for normal operation. Version 1.1.0 adds optional per-user ntfy integration alongside Nextcloud notifications.
-
-## License
-
-AGPL-3.0-or-later
+License: [AGPL-3.0-or-later](LICENSE).

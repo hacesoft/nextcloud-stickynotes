@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace OCA\StickyNotes\Controller;
+namespace OCA\HcStickyNotes\Controller;
 
-use OCA\StickyNotes\AppInfo\Application;
-use OCA\StickyNotes\Service\NotificationService;
+use OCA\HcStickyNotes\AppInfo\Application;
+use OCA\HcStickyNotes\Service\NotificationService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\DataResponse;

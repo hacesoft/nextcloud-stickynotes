@@ -14,7 +14,7 @@ for item in appinfo css img js l10n lib templates; do
 done
 
 BUILD="$ROOT/.build"
-APP="$BUILD/stickynotes"
+APP="$BUILD/hc_stickynotes"
 RELEASE="$ROOT/release"
 rm -rf "$BUILD"
 mkdir -p "$APP" "$RELEASE"
@@ -24,15 +24,15 @@ for item in appinfo css img js l10n lib templates; do
 done
 cp "$ROOT/LICENSE" "$APP/LICENSE"
 
-# The top-level directory in both archives must be exactly the app id: stickynotes/
+# The top-level directory in both archives must be exactly the app id: hc_stickynotes/
 (
     cd "$BUILD"
-    tar -czf "$RELEASE/stickynotes-$VERSION.tar.gz" stickynotes
+    tar -czf "$RELEASE/hc_stickynotes-$VERSION.tar.gz" hc_stickynotes
     if command -v zip >/dev/null 2>&1; then
-        zip -qr "$RELEASE/stickynotes-$VERSION.zip" stickynotes
+        zip -qr "$RELEASE/hc_stickynotes-$VERSION.zip" hc_stickynotes
     fi
 )
 
 rm -rf "$BUILD"
-echo "Built release/stickynotes-$VERSION.tar.gz"
-[ -f "$RELEASE/stickynotes-$VERSION.zip" ] && echo "Built release/stickynotes-$VERSION.zip"
+echo "Built release/hc_stickynotes-$VERSION.tar.gz"
+[ -f "$RELEASE/hc_stickynotes-$VERSION.zip" ] && echo "Built release/hc_stickynotes-$VERSION.zip"

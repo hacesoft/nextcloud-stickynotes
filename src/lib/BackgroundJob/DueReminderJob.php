@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace OCA\StickyNotes\BackgroundJob;
+namespace OCA\HcStickyNotes\BackgroundJob;
 
-use OCA\StickyNotes\Db\NoteMapper;
-use OCA\StickyNotes\Service\NotificationService;
+use OCA\HcStickyNotes\Db\NoteMapper;
+use OCA\HcStickyNotes\Service\NotificationService;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\TimedJob;
 use Psr\Log\LoggerInterface;

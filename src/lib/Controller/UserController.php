@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace OCA\StickyNotes\Controller;
+namespace OCA\HcStickyNotes\Controller;
 
-use OCA\StickyNotes\AppInfo\Application;
+use OCA\HcStickyNotes\AppInfo\Application;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
